@@ -1,0 +1,2 @@
+# LF em qualquer sistema. No Windows, o Git converteria para CRLF e o Prettier acusaria todos os arquivos.
+* text=auto eol=lf

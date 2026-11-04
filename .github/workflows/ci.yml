@@ -1,0 +1,41 @@
+name: CI
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+  workflow_dispatch:
+
+# Só leitura: o job não publica nada nem escreve no repositório.
+permissions:
+  contents: read
+
+# Um push novo cancela a verificação anterior do mesmo branch.
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check:
+    name: Lint, formatação, testes e build
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      # Actions fixadas por SHA: uma tag pode ser movida para outro código, o SHA não.
+      - name: Baixar o código
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      # A versão do Node vem do engines do package.json, a mesma que a Vercel usa.
+      - name: Instalar o Node
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: package.json
+          cache: npm
+
+      - name: Instalar as dependências do lock
+        run: npm ci
+
+      - name: Rodar as checagens
+        run: npm run check
