@@ -1,6 +1,8 @@
 /*
  * Cada tema define os mesmos papéis de cor. Como os componentes só usam os papéis,
  * qualquer bloco com data-theme="light" troca de tema sozinho, como a faixa "Como eu resolvo".
+ * --color-accent é preenchimento (botão, selo); texto em destaque usa --color-accent-text.
+ * tests/theme/contrast.test.ts confere o contraste WCAG de cada par nos dois temas.
  */
 :root,
 [data-theme='dark'] {
@@ -13,6 +15,7 @@
   --color-border: var(--gray-800);
   --color-border-strong: var(--gray-500);
   --color-accent: var(--yellow-400);
+  --color-accent-text: var(--yellow-400);
   --color-on-accent: var(--gray-950);
   --color-focus: var(--yellow-400);
   --color-code-surface: var(--gray-900);
@@ -26,6 +29,7 @@
   --color-text-soft: var(--gray-700);
   --color-text-muted: var(--gray-600);
   --color-border: var(--sand-200);
+  --color-accent-text: var(--amber-700);
   --color-focus: var(--gray-950);
   --color-code-surface: var(--sand-100);
 }

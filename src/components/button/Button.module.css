@@ -52,7 +52,7 @@
 
 .text:hover {
   transform: none;
-  color: var(--color-accent);
+  color: var(--color-accent-text);
 }
 
 .small {

@@ -17,6 +17,8 @@
   --sand-200: #d9d4c7;
 
   --yellow-400: #ffd500;
+  /* Amarelo escurecido para texto de destaque sobre o papel, onde o amarelo puro não tem contraste. */
+  --amber-700: #7a5a00;
 
   /* Cores oficiais do cubo, uma por face. Só o cubo, as miniaturas e o rastreador usam. */
   --face-u: #f5f2ea;

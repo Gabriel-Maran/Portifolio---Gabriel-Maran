@@ -38,7 +38,7 @@
 }
 
 .role em {
-  color: var(--color-accent);
+  color: var(--color-accent-text);
   font-style: normal;
 }
 

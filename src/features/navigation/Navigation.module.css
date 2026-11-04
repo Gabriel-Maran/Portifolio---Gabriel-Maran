@@ -38,7 +38,7 @@
 
 .link:hover,
 .link[aria-current='true'] {
-  color: var(--color-accent);
+  color: var(--color-accent-text);
 }
 
 .end {

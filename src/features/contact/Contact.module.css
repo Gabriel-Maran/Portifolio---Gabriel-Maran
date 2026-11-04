@@ -36,7 +36,7 @@
 }
 
 .email:hover {
-  color: var(--color-accent);
+  color: var(--color-accent-text);
 }
 
 /* Empurra o fim de cada card para a base, alinhando os três. */

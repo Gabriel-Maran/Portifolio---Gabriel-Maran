@@ -1,0 +1,134 @@
+<!doctype html>
+<!--
+  Gerador da imagem de compartilhamento (public/og-image.png, 1200×630).
+  Para refazer: abra este arquivo no navegador, espere as fontes carregarem e clique em "Baixar PNG".
+  As cores são as de src/theme/tokens.css. O domínio fica de fora, para a imagem não envelhecer.
+-->
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Imagem de compartilhamento</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;700;900&display=swap"
+    />
+    <style>
+      body {
+        margin: 24px;
+        background: #222;
+        color: #eee;
+        font-family: system-ui, sans-serif;
+      }
+      canvas {
+        display: block;
+        max-width: 100%;
+        margin-bottom: 16px;
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="card" width="1200" height="630"></canvas>
+    <a id="download" download="og-image.png" href="#">Baixar PNG</a>
+
+    <script type="module">
+      const COLORS = {
+        ink: '#0b0b0c',
+        plastic: '#09090a',
+        paper: '#f5f2ea',
+        soft: '#c9cacf',
+        accent: '#ffd500',
+        faceU: '#f5f2ea',
+        faceF: '#00a564',
+        faceR: '#c8283c',
+      };
+
+      const canvas = document.getElementById('card');
+      const context = canvas.getContext('2d');
+
+      await Promise.all([
+        document.fonts.load('900 120px Rubik'),
+        document.fonts.load('700 40px Rubik'),
+        document.fonts.load('400 28px Rubik'),
+      ]);
+
+      context.fillStyle = COLORS.ink;
+      context.fillRect(0, 0, canvas.width, canvas.height);
+
+      // Texto à esquerda: nome, cargo e a frase do fechamento do site.
+      context.textBaseline = 'alphabetic';
+      context.fillStyle = COLORS.paper;
+      context.font = '900 124px Rubik';
+      context.fillText('GABRIEL', 80, 230);
+      context.fillText('MARAN', 80, 350);
+
+      context.font = '700 40px Rubik';
+      context.fillText('Desenvolvedor Full Stack Júnior', 84, 430);
+      context.fillStyle = COLORS.accent;
+      context.fillText('no Grupo Ítalo', 84, 480);
+
+      context.fillStyle = COLORS.soft;
+      context.font = '400 28px Rubik';
+      context.fillText('Todo problema tem um algoritmo.', 84, 548);
+
+      // Cubo resolvido em perspectiva isométrica: branco em cima, verde à esquerda, vermelho à direita.
+      const sticker = 66;
+      const top = { x: 940, y: 105 };
+      const right = { x: Math.cos(Math.PI / 6), y: 0.5 };
+      const left = { x: -Math.cos(Math.PI / 6), y: 0.5 };
+      const down = { x: 0, y: 1 };
+      const up = { x: Math.cos(Math.PI / 6), y: -0.5 };
+
+      const at = (origin, u, v, i, j) => ({
+        x: origin.x + (u.x * i + v.x * j) * sticker,
+        y: origin.y + (u.y * i + v.y * j) * sticker,
+      });
+
+      const polygon = (points, color) => {
+        context.beginPath();
+        points.forEach((point, index) =>
+          index ? context.lineTo(point.x, point.y) : context.moveTo(point.x, point.y),
+        );
+        context.closePath();
+        context.fillStyle = color;
+        context.fill();
+      };
+
+      // Uma face: a peça de plástico inteira e, por cima, os nove adesivos com folga entre eles.
+      const drawFace = (origin, u, v, color, shade) => {
+        polygon(
+          [
+            at(origin, u, v, 0, 0),
+            at(origin, u, v, 3, 0),
+            at(origin, u, v, 3, 3),
+            at(origin, u, v, 0, 3),
+          ],
+          COLORS.plastic,
+        );
+        const gap = 0.07;
+        for (let i = 0; i < 3; i += 1) {
+          for (let j = 0; j < 3; j += 1) {
+            const corners = [
+              at(origin, u, v, i + gap, j + gap),
+              at(origin, u, v, i + 1 - gap, j + gap),
+              at(origin, u, v, i + 1 - gap, j + 1 - gap),
+              at(origin, u, v, i + gap, j + 1 - gap),
+            ];
+            polygon(corners, color);
+            if (shade) polygon(corners, `rgba(0, 0, 0, ${shade})`);
+          }
+        }
+      };
+
+      const frontBottom = at(top, right, left, 3, 3);
+      drawFace(top, right, left, COLORS.faceU, 0);
+      drawFace(at(top, right, left, 0, 3), right, down, COLORS.faceF, 0.08);
+      drawFace(frontBottom, up, down, COLORS.faceR, 0.18);
+
+      const link = document.getElementById('download');
+      link.href = canvas.toDataURL('image/png');
+      window.ogImageReady = true;
+    </script>
+  </body>
+</html>
