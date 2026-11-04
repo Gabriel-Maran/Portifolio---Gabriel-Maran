@@ -1,0 +1,59 @@
+.fallback {
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: 16px;
+  min-height: 100vh;
+  padding: 24px 16px;
+  text-align: center;
+}
+
+.title {
+  font: 900 var(--font-size-section) / 1.06 var(--font-display);
+  text-wrap: balance;
+}
+
+.description {
+  max-width: 52ch;
+  color: var(--color-text-soft);
+  text-wrap: balance;
+}
+
+/* Botão próprio: o fallback não usa componentes compartilhados, porque eles podem ser a causa da falha. */
+.reload {
+  min-height: 48px;
+  padding: 0 22px;
+  border-radius: 12px;
+  background: var(--color-accent);
+  color: var(--color-on-accent);
+  font-weight: 700;
+  transition: background-color 0.15s;
+}
+
+.reload:hover {
+  background: var(--color-text);
+}
+
+.contactLabel {
+  margin-top: 16px;
+  color: var(--color-text-muted);
+  font: 400 14px / 1.5 var(--font-mono);
+}
+
+.contacts {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 4px 20px;
+  font: 400 14.5px / 1.5 var(--font-mono);
+}
+
+.contacts a {
+  overflow-wrap: anywhere;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.contacts a:hover {
+  color: var(--color-accent);
+}

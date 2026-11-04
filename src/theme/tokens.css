@@ -1,0 +1,43 @@
+/*
+ * Valores brutos do design. Os componentes não usam as cores daqui direto:
+ * usam os papéis de themes.css, para que trocar de tema não exija CSS extra.
+ */
+:root {
+  --gray-950: #0b0b0c;
+  --gray-900: #141416;
+  --gray-800: #2b2b30;
+  --gray-700: #36363b;
+  --gray-600: #5c5c62;
+  --gray-500: #6e6f76;
+  --gray-400: #a3a4aa;
+  --gray-300: #c9cacf;
+
+  --sand-50: #f5f2ea;
+  --sand-100: #e6e1d4;
+  --sand-200: #d9d4c7;
+
+  --yellow-400: #ffd500;
+
+  /* Cores oficiais do cubo, uma por face. Só o cubo, as miniaturas e o rastreador usam. */
+  --face-u: #f5f2ea;
+  --face-r: #c8283c;
+  --face-f: #00a564;
+  --face-l: #ff6a13;
+  --face-b: #1462c8;
+  --face-d: #ffd500;
+
+  --font-display: 'Rubik', 'Segoe UI', system-ui, sans-serif;
+  --font-mono: 'Geist Mono', ui-monospace, 'Cascadia Mono', Consolas, monospace;
+
+  /* Escala de títulos: 17 / 21 / 26 / 34 / 54 */
+  --font-size-hero: clamp(48px, 7vw, 100px);
+  --font-size-section: clamp(34px, 4.4vw, 54px);
+  --font-size-project: clamp(28px, 3vw, 34px);
+  --font-size-title: 26px;
+  --font-size-card: 21px;
+
+  --layout-gap: 16px;
+  --radius-card: 16px;
+  /* Altura da navegação fixa, para a rolagem por âncora não esconder o título. */
+  --nav-height: 64px;
+}

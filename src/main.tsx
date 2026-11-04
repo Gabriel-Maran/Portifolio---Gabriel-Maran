@@ -1,12 +1,18 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
-import './styles/global.css';
-import { App } from './App.tsx';
+import { App } from './app/App.tsx';
+import { AppError } from './errors/AppError.ts';
+import { installGlobalErrorHandlers } from './errors/installGlobalErrorHandlers.ts';
+import { rootErrorHandlers } from './errors/rootErrorHandlers.ts';
+import { ROOT_ELEMENT_ID } from './globals/constants.ts';
+import './theme/index.css';
 
-const root = document.getElementById('root');
-if (!root) throw new Error('Elemento #root não encontrado no index.html.');
+installGlobalErrorHandlers();
 
-createRoot(root).render(
+const rootElement = document.getElementById(ROOT_ELEMENT_ID);
+if (!rootElement) throw new AppError('ROOT_NOT_FOUND');
+
+createRoot(rootElement, rootErrorHandlers).render(
   <StrictMode>
     <App />
   </StrictMode>,

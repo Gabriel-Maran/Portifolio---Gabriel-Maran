@@ -9,12 +9,12 @@
 }
 
 .name {
-  font: 900 var(--t-name) / 0.98 var(--display);
+  font: 900 var(--font-size-hero) / 0.98 var(--font-display);
   letter-spacing: -0.02em;
   text-transform: uppercase;
 }
 
 .note {
-  color: var(--muted);
-  font: 400 14px / 1.5 var(--mono);
+  color: var(--color-text-muted);
+  font: 400 14px / 1.5 var(--font-mono);
 }
