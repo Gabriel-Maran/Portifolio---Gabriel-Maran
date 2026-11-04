@@ -1,3 +1,28 @@
+.finale {
+  display: grid;
+  justify-items: center;
+  gap: 14px;
+  margin-bottom: 4px;
+}
+
+.solvedRow {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+}
+
+.status {
+  font: 700 var(--font-size-title) / 1.2 var(--font-display);
+}
+
+.algorithm {
+  margin-top: 28px;
+  color: var(--color-text-muted);
+  font: 400 14px / 1.5 var(--font-mono);
+  text-align: center;
+}
+
 .card {
   border-color: var(--color-border-strong);
 }

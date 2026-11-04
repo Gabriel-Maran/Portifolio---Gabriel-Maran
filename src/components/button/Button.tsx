@@ -3,12 +3,12 @@ import { EXTERNAL_LINK_PROPS } from '../../globals/constants.ts';
 import { cx } from '../../utils/classNames.ts';
 import styles from './Button.module.css';
 
-export type ButtonVariant = 'primary' | 'ghost';
+export type ButtonVariant = 'primary' | 'ghost' | 'text';
 export type ButtonSize = 'regular' | 'small';
 
 interface ButtonStyleProps {
   children: ReactNode;
-  /** "primary" é a ação principal, em amarelo. Use um por bloco. */
+  /** "primary" é a ação principal, em amarelo, uma por bloco. "text" é uma ação discreta, sublinhada. */
   variant?: ButtonVariant;
   size?: ButtonSize;
 }

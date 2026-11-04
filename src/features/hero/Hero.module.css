@@ -1,6 +1,21 @@
-/* Sem o cubo, que entra na Parte 4, a abertura ganha respiro no topo. */
 .hero {
-  padding-block: clamp(56px, 8vw, 112px) 0;
+  padding-block: 12px 0;
+}
+
+.cube {
+  margin-bottom: -6px;
+}
+
+/* A instrução fica colada ao cubo, para ficar claro que ele responde ao arraste. */
+.cubeNote {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 0 10px;
+  margin-bottom: 4px;
+  color: var(--color-text-muted);
+  font: 400 14px / 1.5 var(--font-mono);
 }
 
 .inner {

@@ -1,0 +1,16 @@
+.glyph {
+  display: inline-grid;
+  grid-template-columns: repeat(3, 10px);
+  gap: 2px;
+  padding: 3px;
+  border-radius: var(--radius-xs);
+  background: var(--cube-plastic-deep);
+}
+
+.cell {
+  width: 10px;
+  height: 10px;
+  border-radius: 2px;
+  background: var(--face-color);
+  transition: background-color 0.25s;
+}

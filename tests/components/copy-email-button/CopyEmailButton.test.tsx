@@ -3,7 +3,7 @@ import { afterEach, expect, test, vi } from 'vitest';
 import { CopyEmailButton } from '../../../src/components/copy-email-button/CopyEmailButton.tsx';
 import { CONTACT_EMAIL } from '../../../src/globals/constants.ts';
 import { messages } from '../../../src/globals/messages/index.ts';
-import { renderWithLanguage } from '../../support/renderWithLanguage.tsx';
+import { renderWithProviders } from '../../support/renderWithProviders.tsx';
 
 const { copyEmail } = messages.pt;
 
@@ -22,7 +22,7 @@ afterEach(() => {
 test('copia o e-mail e avisa quem usa leitor de tela', async () => {
   const writeText = vi.fn().mockResolvedValue(undefined);
   stubClipboard(writeText);
-  renderWithLanguage(<CopyEmailButton />);
+  renderWithProviders(<CopyEmailButton />);
 
   fireEvent.click(screen.getByRole('button', { name: copyEmail.action }));
   await flushCopy();
@@ -35,7 +35,7 @@ test('copia o e-mail e avisa quem usa leitor de tela', async () => {
 test('depois de um tempo, o botão volta ao texto normal', async () => {
   vi.useFakeTimers();
   stubClipboard(vi.fn().mockResolvedValue(undefined));
-  renderWithLanguage(<CopyEmailButton />);
+  renderWithProviders(<CopyEmailButton />);
 
   fireEvent.click(screen.getByRole('button', { name: copyEmail.action }));
   await flushCopy();
@@ -47,7 +47,7 @@ test('depois de um tempo, o botão volta ao texto normal', async () => {
 
 test('se o navegador recusar, mostra o e-mail selecionado para copiar na mão', async () => {
   stubClipboard(vi.fn().mockRejectedValue(new Error('NotAllowedError')));
-  renderWithLanguage(<CopyEmailButton />);
+  renderWithProviders(<CopyEmailButton />);
 
   fireEvent.click(screen.getByRole('button', { name: copyEmail.action }));
   await flushCopy();
@@ -62,7 +62,7 @@ test('se o navegador recusar, mostra o e-mail selecionado para copiar na mão', 
 });
 
 test('sem a API de área de transferência, cai no mesmo campo selecionado', async () => {
-  renderWithLanguage(<CopyEmailButton />);
+  renderWithProviders(<CopyEmailButton />);
 
   fireEvent.click(screen.getByRole('button', { name: copyEmail.action }));
   await flushCopy();

@@ -31,7 +31,6 @@ export const en: Messages = {
   },
 
   cube: {
-    label: 'Interactive Rubik’s cube. Use the arrow keys to rotate it.',
     hint: 'Drag the cube. It solves itself as you read.',
     scramble: 'Scramble',
     solve: 'Solve',

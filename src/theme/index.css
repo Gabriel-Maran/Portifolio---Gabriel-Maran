@@ -1,4 +1,5 @@
 /* Entrada única do tema: valores brutos, papéis de cor por tema e estilos base. */
 @import './tokens.css';
 @import './themes.css';
+@import './faces.css';
 @import './base.css';

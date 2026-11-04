@@ -41,6 +41,20 @@
   border-color: var(--color-text);
 }
 
+.text {
+  min-height: 44px;
+  padding: 0 4px;
+  color: var(--color-text-soft);
+  font: 500 14px / 1 var(--font-mono);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.text:hover {
+  transform: none;
+  color: var(--color-accent);
+}
+
 .small {
   min-height: 44px;
   padding: 0 16px;

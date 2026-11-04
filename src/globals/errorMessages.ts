@@ -6,6 +6,7 @@ export const ERROR_MESSAGES = {
   UNHANDLED_REJECTION: 'Promise rejeitada sem tratamento.',
   RECOVERABLE: 'O React se recuperou sozinho de um erro.',
   LANGUAGE_PROVIDER_MISSING: 'useLanguage foi chamado fora do LanguageProvider.',
+  CUBE_PROVIDER_MISSING: 'useCube foi chamado fora do CubeContext.',
   UNEXPECTED: 'Erro inesperado.',
 } as const;
 

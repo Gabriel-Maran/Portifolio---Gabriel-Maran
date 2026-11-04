@@ -1,0 +1,27 @@
+/*
+ * Liga data-face-color="U" à cor oficial da face. Adesivos, miniaturas e o rastreador
+ * pintam com var(--face-color), sem repetir a tabela de cores em cada componente.
+ */
+[data-face-color='U'] {
+  --face-color: var(--face-u);
+}
+
+[data-face-color='R'] {
+  --face-color: var(--face-r);
+}
+
+[data-face-color='F'] {
+  --face-color: var(--face-f);
+}
+
+[data-face-color='L'] {
+  --face-color: var(--face-l);
+}
+
+[data-face-color='B'] {
+  --face-color: var(--face-b);
+}
+
+[data-face-color='D'] {
+  --face-color: var(--face-d);
+}

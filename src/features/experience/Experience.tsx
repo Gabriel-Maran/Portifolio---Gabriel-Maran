@@ -1,6 +1,7 @@
 import { Label } from '../../components/label/Label.tsx';
 import { Section } from '../../components/section/Section.tsx';
 import { TagList } from '../../components/tag-list/TagList.tsx';
+import { SectionGlyph } from '../../cube/SectionGlyph.tsx';
 import { SECTION_IDS } from '../../globals/constants.ts';
 import { useMessages } from '../../i18n/useLanguage.ts';
 import styles from './Experience.module.css';
@@ -11,7 +12,12 @@ export function Experience() {
   const { experience } = useMessages();
 
   return (
-    <Section id={SECTION_IDS.experience} title={experience.title} subtitle={experience.subtitle}>
+    <Section
+      id={SECTION_IDS.experience}
+      title={experience.title}
+      subtitle={experience.subtitle}
+      adornment={<SectionGlyph section="experience" />}
+    >
       <div className={styles.timeline}>
         {experience.jobs.map((job) => (
           <TimelineEntry

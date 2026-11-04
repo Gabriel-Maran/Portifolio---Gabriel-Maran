@@ -7,12 +7,14 @@ interface SectionProps {
   id: string;
   title: string;
   subtitle?: string;
+  /** O que vem antes do título, como a miniatura de face do cubo. */
+  adornment?: ReactNode;
   /** "light" vira a faixa clara: o tema troca sozinho pelos papéis de cor. */
   theme?: 'light';
   children: ReactNode;
 }
 
-export function Section({ id, title, subtitle, theme, children }: SectionProps) {
+export function Section({ id, title, subtitle, adornment, theme, children }: SectionProps) {
   const titleId = useId();
 
   return (
@@ -24,6 +26,7 @@ export function Section({ id, title, subtitle, theme, children }: SectionProps) 
     >
       <Container>
         <header className={styles.header}>
+          {adornment}
           <h2 id={titleId} className={styles.title}>
             {title}
           </h2>

@@ -3,13 +3,13 @@ import { describe, expect, test } from 'vitest';
 import { Navigation } from '../../../src/features/navigation/Navigation.tsx';
 import { SECTION_IDS, type SectionKey } from '../../../src/globals/constants.ts';
 import { messages } from '../../../src/globals/messages/index.ts';
-import { renderWithLanguage } from '../../support/renderWithLanguage.tsx';
+import { renderWithProviders } from '../../support/renderWithProviders.tsx';
 
 const SECTIONS: SectionKey[] = ['whatIDo', 'projects', 'contact'];
 const { navigation } = messages.pt;
 
 function renderNavigation(activeSection: string | null = null) {
-  renderWithLanguage(<Navigation sections={SECTIONS} activeSection={activeSection} />);
+  renderWithProviders(<Navigation sections={SECTIONS} activeSection={activeSection} />);
   // A lista larga vem primeiro; a do menu compacto vem depois, dentro do <details>.
   const [wideLinks, menuLinks] = screen.getAllByRole('navigation', {
     name: navigation.sectionsLabel,

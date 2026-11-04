@@ -91,6 +91,28 @@ test('uma seção que sai da faixa não muda a seção ativa', () => {
   expect(active()).toBe('primeira');
 });
 
+test('avisa cada seção que entra, para a página registrar a visita', () => {
+  vi.stubGlobal('IntersectionObserver', FakeIntersectionObserver);
+  const entered: string[] = [];
+  function PageWithVisits() {
+    useActiveSection(IDS, (id) => entered.push(id));
+    return (
+      <>
+        {IDS.map((id) => (
+          <section key={id} id={id} />
+        ))}
+      </>
+    );
+  }
+  render(<PageWithVisits />);
+
+  FakeIntersectionObserver.latest?.enter('segunda');
+  FakeIntersectionObserver.latest?.enter('primeira', false);
+  FakeIntersectionObserver.latest?.enter('primeira');
+
+  expect(entered).toEqual(['segunda', 'primeira']);
+});
+
 test('desliga o observer quando a página sai da tela', () => {
   vi.stubGlobal('IntersectionObserver', FakeIntersectionObserver);
   const { unmount } = render(<Page />);

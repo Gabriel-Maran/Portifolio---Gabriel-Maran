@@ -35,7 +35,6 @@ export const pt = {
   },
 
   cube: {
-    label: 'Cubo mágico interativo. Use as setas para girar.',
     hint: 'Arraste o cubo. Ele se resolve enquanto você lê.',
     scramble: 'Embaralhar',
     solve: 'Resolver',

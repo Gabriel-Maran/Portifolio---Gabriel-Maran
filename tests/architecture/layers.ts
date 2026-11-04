@@ -7,6 +7,7 @@ export const LAYERS = [
   'app',
   'pages',
   'features',
+  'cube',
   'components',
   'i18n',
   'errors',

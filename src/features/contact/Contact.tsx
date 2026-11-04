@@ -4,6 +4,10 @@ import { CopyEmailButton } from '../../components/copy-email-button/CopyEmailBut
 import { Grid } from '../../components/grid/Grid.tsx';
 import { Label } from '../../components/label/Label.tsx';
 import { Section } from '../../components/section/Section.tsx';
+import { CubeScene } from '../../cube/CubeScene.tsx';
+import { FaceGlyph } from '../../cube/FaceGlyph.tsx';
+import { GLYPH_CELLS } from '../../cube/glyph.ts';
+import { useCube } from '../../cube/useCube.ts';
 import {
   CONTACT_EMAIL,
   CONTACT_MAILTO,
@@ -14,11 +18,37 @@ import { useMessages } from '../../i18n/useLanguage.ts';
 import { cx } from '../../utils/classNames.ts';
 import styles from './Contact.module.css';
 
-export function Contact() {
-  const { contact } = useMessages();
+/** O fechamento: o cubo chega resolvido aqui, com as seis faces e a contagem de movimentos. */
+function Finale() {
+  const { cube } = useMessages();
+  const { solution, visited, movesDone, isSolved } = useCube();
 
   return (
-    <Section id={SECTION_IDS.contact} title={contact.title} subtitle={contact.availability}>
+    <div className={styles.finale}>
+      <CubeScene draggable />
+      <div className={styles.solvedRow}>
+        {solution.map((face) => (
+          <FaceGlyph key={face} face={face} solvedCells={visited.has(face) ? GLYPH_CELLS : 0} />
+        ))}
+      </div>
+      <p className={styles.status}>
+        {isSolved ? cube.solvedIn(movesDone) : cube.movesLeft(solution.length - movesDone)}
+      </p>
+    </div>
+  );
+}
+
+export function Contact() {
+  const { contact, cube } = useMessages();
+  const { solution } = useCube();
+
+  return (
+    <Section
+      id={SECTION_IDS.contact}
+      title={contact.title}
+      subtitle={contact.availability}
+      adornment={<Finale />}
+    >
       <Grid columns={3}>
         <Card className={styles.card}>
           <Label>{contact.emailLabel}</Label>
@@ -38,6 +68,7 @@ export function Contact() {
           </LinkCard>
         ))}
       </Grid>
+      <p className={styles.algorithm}>{cube.algorithm(solution.join(' '))}</p>
     </Section>
   );
 }

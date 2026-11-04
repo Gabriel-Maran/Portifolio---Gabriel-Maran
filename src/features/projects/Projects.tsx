@@ -1,4 +1,5 @@
 import { Section } from '../../components/section/Section.tsx';
+import { SectionGlyph } from '../../cube/SectionGlyph.tsx';
 import { EXTERNAL_URLS, SECTION_IDS } from '../../globals/constants.ts';
 import { useMessages } from '../../i18n/useLanguage.ts';
 import { hasKey } from '../../utils/object.ts';
@@ -16,7 +17,12 @@ export function Projects() {
   );
 
   return (
-    <Section id={SECTION_IDS.projects} title={projects.title} subtitle={projects.subtitle}>
+    <Section
+      id={SECTION_IDS.projects}
+      title={projects.title}
+      subtitle={projects.subtitle}
+      adornment={<SectionGlyph section="projects" />}
+    >
       <ProjectCard
         category={rinha.category}
         name={rinha.name}

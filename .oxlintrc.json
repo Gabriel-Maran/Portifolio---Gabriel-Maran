@@ -18,6 +18,10 @@
     {
       "files": ["src/errors/logError.ts"],
       "rules": { "no-console": "off" }
+    },
+    {
+      "files": ["tests/**"],
+      "rules": { "react/only-export-components": "off" }
     }
   ],
   "ignorePatterns": ["dist"]

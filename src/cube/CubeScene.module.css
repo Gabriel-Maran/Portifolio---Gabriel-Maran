@@ -1,0 +1,82 @@
+.scene {
+  position: relative;
+  width: clamp(200px, 18vw, 250px);
+  aspect-ratio: 1;
+  user-select: none;
+  /* Deixa a página rolar na vertical mesmo com o dedo em cima do cubo. */
+  touch-action: pan-y;
+}
+
+.draggable {
+  cursor: grab;
+}
+
+.dragging {
+  cursor: grabbing;
+}
+
+.cube {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform-style: preserve-3d;
+}
+
+.cubie {
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform-style: preserve-3d;
+}
+
+.side {
+  position: absolute;
+  top: calc(var(--u) / -2);
+  left: calc(var(--u) / -2);
+  width: var(--u);
+  height: var(--u);
+  background: var(--cube-plastic);
+  backface-visibility: hidden;
+}
+
+.side[data-side='F'] {
+  transform: translateZ(calc(var(--u) / 2));
+}
+
+.side[data-side='B'] {
+  transform: rotateY(180deg) translateZ(calc(var(--u) / 2));
+}
+
+.side[data-side='R'] {
+  transform: rotateY(90deg) translateZ(calc(var(--u) / 2));
+}
+
+.side[data-side='L'] {
+  transform: rotateY(-90deg) translateZ(calc(var(--u) / 2));
+}
+
+.side[data-side='U'] {
+  transform: rotateX(90deg) translateZ(calc(var(--u) / 2));
+}
+
+.side[data-side='D'] {
+  transform: rotateX(-90deg) translateZ(calc(var(--u) / 2));
+}
+
+.sticker {
+  position: absolute;
+  inset: 4.5%;
+  border-radius: 14%;
+  background: var(--face-color);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 30%);
+}
+
+/* A sombra vem do controlador, conforme o lado encara a luz. */
+.sticker::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: var(--cube-shade);
+  opacity: var(--shade, 0);
+}

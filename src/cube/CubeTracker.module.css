@@ -1,0 +1,36 @@
+.tracker {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.cube {
+  width: 38px;
+  height: 38px;
+}
+
+.pips {
+  display: flex;
+  gap: 4px;
+}
+
+.pip {
+  width: 8px;
+  height: 8px;
+  border: 1px solid var(--color-border-strong);
+  border-radius: 2px;
+  transition:
+    background-color 0.3s,
+    border-color 0.3s;
+}
+
+.pip[data-face-color] {
+  border-color: transparent;
+  background: var(--face-color);
+}
+
+@media (max-width: 420px) {
+  .pips {
+    display: none;
+  }
+}

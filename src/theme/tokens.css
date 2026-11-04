@@ -26,6 +26,11 @@
   --face-b: #1462c8;
   --face-d: #ffd500;
 
+  /* Plástico do cubo e das miniaturas, e a sombra que escurece os adesivos de lado. */
+  --cube-plastic: #09090a;
+  --cube-plastic-deep: #050506;
+  --cube-shade: #000;
+
   --font-display: 'Rubik', 'Segoe UI', system-ui, sans-serif;
   --font-mono: 'Geist Mono', ui-monospace, 'Cascadia Mono', Consolas, monospace;
 
