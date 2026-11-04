@@ -1,5 +1,4 @@
-import assert from 'node:assert/strict';
-import { describe, test } from 'node:test';
+import { describe, expect, test } from 'vitest';
 import { DEFAULT_LANGUAGE, EXTERNAL_URLS, LANGUAGES } from '../../src/globals/constants.ts';
 import { messages } from '../../src/globals/messages/index.ts';
 import { hasKey } from '../../src/utils/object.ts';
@@ -26,46 +25,44 @@ function renderedTexts([path, value]: Leaf): Leaf[] {
 
 const keysOf = (dictionary: unknown) => flatten(dictionary).map(([path]) => path);
 
-for (const language of LANGUAGES) {
-  describe(`mensagens em ${language}`, () => {
-    const leaves = flatten(messages[language]);
-    const texts = leaves.flatMap(renderedTexts);
+describe.each(LANGUAGES)('mensagens em %s', (language) => {
+  const leaves = flatten(messages[language]);
+  const texts = leaves.flatMap(renderedTexts);
 
-    test('tem as mesmas chaves do idioma padrão', () => {
-      assert.deepEqual(keysOf(messages[language]), keysOf(messages[DEFAULT_LANGUAGE]));
-    });
-
-    test('só tem texto, número, booleano ou função de texto', () => {
-      const invalid = leaves.filter(
-        ([, value]) => !['string', 'number', 'boolean', 'function'].includes(typeof value),
-      );
-      assert.deepEqual(invalid, []);
-    });
-
-    test('nenhum texto está vazio, nem o gerado por função', () => {
-      const empty = texts.filter(([, text]) => typeof text !== 'string' || text.trim() === '');
-      assert.deepEqual(empty, []);
-    });
-
-    // Os textos não têm asterisco nem crase de verdade: um que sobra é marcação mal fechada.
-    test('a marcação de destaque está bem fechada', () => {
-      const leftovers = texts.filter(([, text]) =>
-        parseRichText(String(text)).some(
-          (token) => token.type === 'text' && /[*`]|\]\(/.test(token.text),
-        ),
-      );
-      assert.deepEqual(leftovers, []);
-    });
-
-    test('todo link aponta para uma chave de EXTERNAL_URLS', () => {
-      const unknown = texts.flatMap(([path, text]) =>
-        parseRichText(String(text)).flatMap((token) =>
-          token.type === 'link' && !hasKey(EXTERNAL_URLS, token.target)
-            ? [`${path}: ${token.target}`]
-            : [],
-        ),
-      );
-      assert.deepEqual(unknown, []);
-    });
+  test('tem as mesmas chaves do idioma padrão', () => {
+    expect(keysOf(messages[language])).toEqual(keysOf(messages[DEFAULT_LANGUAGE]));
   });
-}
+
+  test('só tem texto, número, booleano ou função de texto', () => {
+    const invalid = leaves.filter(
+      ([, value]) => !['string', 'number', 'boolean', 'function'].includes(typeof value),
+    );
+    expect(invalid).toEqual([]);
+  });
+
+  test('nenhum texto está vazio, nem o gerado por função', () => {
+    const empty = texts.filter(([, text]) => typeof text !== 'string' || text.trim() === '');
+    expect(empty).toEqual([]);
+  });
+
+  // Os textos não têm asterisco nem crase de verdade: um que sobra é marcação mal fechada.
+  test('a marcação de destaque está bem fechada', () => {
+    const leftovers = texts.filter(([, text]) =>
+      parseRichText(String(text)).some(
+        (token) => token.type === 'text' && /[*`]|\]\(/.test(token.text),
+      ),
+    );
+    expect(leftovers).toEqual([]);
+  });
+
+  test('todo link aponta para uma chave de EXTERNAL_URLS', () => {
+    const unknown = texts.flatMap(([path, text]) =>
+      parseRichText(String(text)).flatMap((token) =>
+        token.type === 'link' && !hasKey(EXTERNAL_URLS, token.target)
+          ? [`${path}: ${token.target}`]
+          : [],
+      ),
+    );
+    expect(unknown).toEqual([]);
+  });
+});

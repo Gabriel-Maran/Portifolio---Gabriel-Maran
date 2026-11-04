@@ -20,9 +20,11 @@ export function LanguageSwitcher() {
             aria-pressed={option === language}
             onClick={() => setLanguage(option)}
           >
-            {/* O nome acessível começa pela sigla visível, como pede o WCAG 2.5.3. */}
-            {short}
-            <VisuallyHidden> {name}</VisuallyHidden>
+            {/*
+              O nome acessível começa pela sigla visível, como pede o WCAG 2.5.3. O espaço fica
+              fora do texto escondido, porque o cálculo do nome descarta espaço no começo dele.
+            */}
+            {short} <VisuallyHidden>{name}</VisuallyHidden>
           </button>
         );
       })}

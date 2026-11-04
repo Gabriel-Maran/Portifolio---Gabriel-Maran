@@ -1,6 +1,5 @@
-import assert from 'node:assert/strict';
-import { resolve } from 'node:path';
-import { describe, test } from 'node:test';
+import { fileURLToPath } from 'node:url';
+import { describe, expect, test } from 'vitest';
 import {
   checkImport,
   checkLocation,
@@ -9,51 +8,50 @@ import {
   findViolations,
 } from './layers.ts';
 
-const SRC_DIR = resolve(import.meta.dirname, '../../src');
+const SRC_DIR = fileURLToPath(new URL('../../src', import.meta.url));
 
 test('o código em src respeita as camadas', () => {
-  assert.deepEqual(findViolations(SRC_DIR), []);
+  expect(findViolations(SRC_DIR)).toEqual([]);
 });
 
 // Garante que a regra acusa os erros de verdade, para o teste acima não passar por omissão.
 describe('regra de camadas', () => {
   test('aceita import para uma camada de baixo', () => {
-    assert.equal(checkImport('pages/home/HomePage.tsx', 'globals/constants.ts'), undefined);
-    assert.equal(checkImport('main.tsx', 'theme/index.css'), undefined);
+    expect(checkImport('pages/home/HomePage.tsx', 'globals/constants.ts')).toBeUndefined();
+    expect(checkImport('main.tsx', 'theme/index.css')).toBeUndefined();
   });
 
   test('aceita import dentro da mesma fatia', () => {
-    assert.equal(checkImport('features/hero/Hero.tsx', 'features/hero/useHero.ts'), undefined);
+    expect(checkImport('features/hero/Hero.tsx', 'features/hero/useHero.ts')).toBeUndefined();
   });
 
   test('barra import para uma camada de cima', () => {
-    assert.match(checkImport('components/Button.tsx', 'features/hero/Hero.tsx') ?? '', /não pode/);
-    assert.match(checkImport('globals/constants.ts', 'utils/language.ts') ?? '', /não pode/);
+    expect(checkImport('components/Button.tsx', 'features/hero/Hero.tsx')).toMatch(/não pode/);
+    expect(checkImport('globals/constants.ts', 'utils/language.ts')).toMatch(/não pode/);
   });
 
   // O fallback de erro não pode depender do contexto de idioma, que pode ser a causa da falha.
   test('errors não depende de i18n, e i18n pode usar errors', () => {
-    assert.match(
-      checkImport('errors/ErrorFallback.tsx', 'i18n/useLanguage.ts') ?? '',
+    expect(checkImport('errors/ErrorFallback.tsx', 'i18n/useLanguage.ts')).toMatch(
       /não pode depender de i18n/,
     );
-    assert.equal(checkImport('i18n/useLanguage.ts', 'errors/AppError.ts'), undefined);
+    expect(checkImport('i18n/useLanguage.ts', 'errors/AppError.ts')).toBeUndefined();
   });
 
   test('barra import entre features e entre pages', () => {
-    assert.match(checkImport('features/hero/Hero.tsx', 'features/stack/Stack.tsx') ?? '', /fatias/);
-    assert.match(checkImport('pages/home/Home.tsx', 'pages/project/Project.tsx') ?? '', /fatias/);
+    expect(checkImport('features/hero/Hero.tsx', 'features/stack/Stack.tsx')).toMatch(/fatias/);
+    expect(checkImport('pages/home/Home.tsx', 'pages/project/Project.tsx')).toMatch(/fatias/);
   });
 
   test('barra pasta fora das camadas e import que sai de src', () => {
-    assert.match(checkLocation('hooks/useScroll.ts') ?? '', /fora das camadas/);
-    assert.match(checkLocation('main/index.ts') ?? '', /fora das camadas/);
-    assert.match(checkImport('utils/language.ts', '../package.json') ?? '', /fora das camadas/);
+    expect(checkLocation('hooks/useScroll.ts')).toMatch(/fora das camadas/);
+    expect(checkLocation('main/index.ts')).toMatch(/fora das camadas/);
+    expect(checkImport('utils/language.ts', '../package.json')).toMatch(/fora das camadas/);
   });
 
   test('barra pacotes só em utils e globals', () => {
-    assert.match(checkPackageImport('utils/language.ts', 'react') ?? '', /não depende de pacotes/);
-    assert.equal(checkPackageImport('components/Button.tsx', 'react'), undefined);
+    expect(checkPackageImport('utils/language.ts', 'react')).toMatch(/não depende de pacotes/);
+    expect(checkPackageImport('components/Button.tsx', 'react')).toBeUndefined();
   });
 });
 
@@ -70,7 +68,7 @@ describe('leitura de imports', () => {
       "const f = await import('./f.ts');",
     ].join('\n');
 
-    assert.deepEqual(extractImports(code), [
+    expect(extractImports(code)).toEqual([
       './a.ts',
       '../b.ts',
       './c.ts',
@@ -81,7 +79,7 @@ describe('leitura de imports', () => {
   });
 
   test('não encontra nada em código sem import', () => {
-    assert.deepEqual(extractImports(''), []);
-    assert.deepEqual(extractImports('const from = 1;'), []);
+    expect(extractImports('')).toEqual([]);
+    expect(extractImports('const from = 1;')).toEqual([]);
   });
 });

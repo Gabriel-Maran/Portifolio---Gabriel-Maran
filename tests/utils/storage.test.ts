@@ -1,5 +1,4 @@
-import assert from 'node:assert/strict';
-import { describe, test } from 'node:test';
+import { describe, expect, test } from 'vitest';
 import { getLocalStorage, readStorage, writeStorage } from '../../src/utils/storage.ts';
 
 function memoryStorage(): Pick<Storage, 'getItem' | 'setItem'> {
@@ -23,25 +22,25 @@ describe('storage', () => {
   test('grava e lê um valor', () => {
     const storage = memoryStorage();
 
-    assert.equal(writeStorage(storage, 'language', 'en'), true);
-    assert.equal(readStorage(storage, 'language'), 'en');
+    expect(writeStorage(storage, 'language', 'en')).toBe(true);
+    expect(readStorage(storage, 'language')).toBe('en');
   });
 
   test('chave que não existe devolve null', () => {
-    assert.equal(readStorage(memoryStorage(), 'language'), null);
+    expect(readStorage(memoryStorage(), 'language')).toBeNull();
   });
 
   test('armazenamento que lança erro vira "sem armazenamento"', () => {
-    assert.equal(readStorage(failingStorage, 'language'), null);
-    assert.equal(writeStorage(failingStorage, 'language', 'en'), false);
+    expect(readStorage(failingStorage, 'language')).toBeNull();
+    expect(writeStorage(failingStorage, 'language', 'en')).toBe(false);
   });
 
   test('sem armazenamento, lê null e não grava', () => {
-    assert.equal(readStorage(null, 'language'), null);
-    assert.equal(writeStorage(null, 'language', 'en'), false);
+    expect(readStorage(null, 'language')).toBeNull();
+    expect(writeStorage(null, 'language', 'en')).toBe(false);
   });
 
   test('fora do navegador, não há localStorage', () => {
-    assert.equal(getLocalStorage(), null);
+    expect(getLocalStorage()).toBeNull();
   });
 });

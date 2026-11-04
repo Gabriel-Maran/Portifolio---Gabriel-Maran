@@ -1,5 +1,4 @@
-import assert from 'node:assert/strict';
-import { test } from 'node:test';
+import { expect, test } from 'vitest';
 import { messages } from '../../src/globals/messages/index.ts';
 import {
   applyDocumentLanguage,
@@ -24,9 +23,9 @@ test('troca lang, título e descrição para o inglês', () => {
 
   applyDocumentLanguage(target, 'en');
 
-  assert.equal(target.documentElement.lang, 'en');
-  assert.equal(target.title, messages.en.meta.title);
-  assert.equal(description.content, messages.en.meta.description);
+  expect(target.documentElement.lang).toBe('en');
+  expect(target.title).toBe(messages.en.meta.title);
+  expect(description.content).toBe(messages.en.meta.description);
 });
 
 test('volta para o português com a tag pt-BR', () => {
@@ -35,13 +34,13 @@ test('volta para o português com a tag pt-BR', () => {
   applyDocumentLanguage(target, 'en');
   applyDocumentLanguage(target, 'pt');
 
-  assert.equal(target.documentElement.lang, 'pt-BR');
-  assert.equal(target.title, messages.pt.meta.title);
+  expect(target.documentElement.lang).toBe('pt-BR');
+  expect(target.title).toBe(messages.pt.meta.title);
 });
 
 test('não quebra se a página não tiver meta description', () => {
   const { target } = fakeDocument(false);
 
-  assert.doesNotThrow(() => applyDocumentLanguage(target, 'en'));
-  assert.equal(target.title, messages.en.meta.title);
+  expect(() => applyDocumentLanguage(target, 'en')).not.toThrow();
+  expect(target.title).toBe(messages.en.meta.title);
 });

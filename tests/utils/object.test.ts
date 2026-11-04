@@ -1,17 +1,15 @@
-import assert from 'node:assert/strict';
-import { test } from 'node:test';
+import { expect, test } from 'vitest';
 import { hasKey } from '../../src/utils/object.ts';
 
 const record = { linkedin: 'a', github: 'b' };
 
-test('reconhece as chaves do próprio objeto', () => {
-  assert.equal(hasKey(record, 'linkedin'), true);
-  assert.equal(hasKey(record, 'github'), true);
+test.each(['linkedin', 'github'])('reconhece a chave própria %s', (key) => {
+  expect(hasKey(record, key)).toBe(true);
 });
 
-test('recusa chaves de fora e as herdadas do protótipo', () => {
-  assert.equal(hasKey(record, 'twitter'), false);
-  assert.equal(hasKey(record, ''), false);
-  assert.equal(hasKey(record, 'toString'), false);
-  assert.equal(hasKey(record, '__proto__'), false);
-});
+test.each(['twitter', '', 'toString', '__proto__'])(
+  'recusa a chave de fora ou herdada %j',
+  (key) => {
+    expect(hasKey(record, key)).toBe(false);
+  },
+);

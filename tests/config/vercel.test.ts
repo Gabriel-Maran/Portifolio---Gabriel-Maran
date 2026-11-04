@@ -1,5 +1,4 @@
-import assert from 'node:assert/strict';
-import { describe, test } from 'node:test';
+import { describe, expect, test } from 'vitest';
 import { isVercelBuild, readVercelHeadersForAllPaths } from '../../config/vercel.ts';
 
 describe('headers do vercel.json', () => {
@@ -8,35 +7,33 @@ describe('headers do vercel.json', () => {
   const cspTokens = csp.split(/[\s;]+/);
 
   test('a CSP só aceita scripts do próprio site', () => {
-    assert.match(csp, /script-src 'self'(;|$)/);
+    expect(csp).toMatch(/script-src 'self'(;|$)/);
   });
 
   // Guarda contra afrouxar a CSP sem querer: qualquer um destes reabre a porta para XSS.
-  for (const unsafe of ["'unsafe-inline'", "'unsafe-eval'", '*']) {
-    test(`a CSP não usa ${unsafe}`, () => {
-      assert.ok(!cspTokens.includes(unsafe), `a CSP contém ${unsafe}`);
-    });
-  }
+  test.each(["'unsafe-inline'", "'unsafe-eval'", '*'])('a CSP não usa %s', (unsafe) => {
+    expect(cspTokens).not.toContain(unsafe);
+  });
 
   test('o site não pode ser aberto dentro de iframe de outro domínio', () => {
-    assert.match(csp, /frame-ancestors 'none'/);
-    assert.equal(headers['X-Frame-Options'], 'DENY');
+    expect(csp).toMatch(/frame-ancestors 'none'/);
+    expect(headers['X-Frame-Options']).toBe('DENY');
   });
 
   test('o navegador não adivinha o tipo dos arquivos', () => {
-    assert.equal(headers['X-Content-Type-Options'], 'nosniff');
+    expect(headers['X-Content-Type-Options']).toBe('nosniff');
   });
 });
 
 describe('isVercelBuild', () => {
   test('reconhece o build da Vercel', () => {
-    assert.equal(isVercelBuild({ VERCEL: '1' }), true);
+    expect(isVercelBuild({ VERCEL: '1' })).toBe(true);
   });
 
-  test('ignora builds locais e do CI', () => {
-    assert.equal(isVercelBuild({}), false);
-    assert.equal(isVercelBuild({ VERCEL: '' }), false);
-    assert.equal(isVercelBuild({ VERCEL: '0' }), false);
-    assert.equal(isVercelBuild({ CI: 'true' }), false);
-  });
+  test.each([{}, { VERCEL: '' }, { VERCEL: '0' }, { CI: 'true' }])(
+    'ignora builds locais e do CI: %o',
+    (env) => {
+      expect(isVercelBuild(env)).toBe(false);
+    },
+  );
 });

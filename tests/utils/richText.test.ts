@@ -1,24 +1,23 @@
-import assert from 'node:assert/strict';
-import { describe, test } from 'node:test';
+import { describe, expect, test } from 'vitest';
 import { parseRichText, type RichTextToken } from '../../src/utils/richText.ts';
 
 const text = (value: string): RichTextToken => ({ type: 'text', text: value });
 
 describe('parseRichText: marcação válida', () => {
   test('texto sem marcação vira um token só', () => {
-    assert.deepEqual(parseRichText('texto simples'), [text('texto simples')]);
+    expect(parseRichText('texto simples')).toEqual([text('texto simples')]);
   });
 
   test('lê forte, ênfase e código', () => {
-    assert.deepEqual(parseRichText('**Minha parte:** planejei'), [
+    expect(parseRichText('**Minha parte:** planejei')).toEqual([
       { type: 'strong', text: 'Minha parte:' },
       text(' planejei'),
     ]);
-    assert.deepEqual(parseRichText('Júnior *no Grupo Ítalo*'), [
+    expect(parseRichText('Júnior *no Grupo Ítalo*')).toEqual([
       text('Júnior '),
       { type: 'emphasis', text: 'no Grupo Ítalo' },
     ]);
-    assert.deepEqual(parseRichText('como `+18%PASSEU`, e'), [
+    expect(parseRichText('como `+18%PASSEU`, e')).toEqual([
       text('como '),
       { type: 'code', text: '+18%PASSEU' },
       text(', e'),
@@ -26,7 +25,7 @@ describe('parseRichText: marcação válida', () => {
   });
 
   test('lê link pela chave', () => {
-    assert.deepEqual(parseRichText('um [app acadêmico](academicApp).'), [
+    expect(parseRichText('um [app acadêmico](academicApp).')).toEqual([
       text('um '),
       { type: 'link', text: 'app acadêmico', target: 'academicApp' },
       text('.'),
@@ -34,7 +33,7 @@ describe('parseRichText: marcação válida', () => {
   });
 
   test('lê marcadores seguidos e nas pontas', () => {
-    assert.deepEqual(parseRichText('**a***b*`c`'), [
+    expect(parseRichText('**a***b*`c`')).toEqual([
       { type: 'strong', text: 'a' },
       { type: 'emphasis', text: 'b' },
       { type: 'code', text: 'c' },
@@ -42,45 +41,37 @@ describe('parseRichText: marcação válida', () => {
   });
 
   test('o código guarda asteriscos como texto', () => {
-    assert.deepEqual(parseRichText('`a*b*`'), [{ type: 'code', text: 'a*b*' }]);
+    expect(parseRichText('`a*b*`')).toEqual([{ type: 'code', text: 'a*b*' }]);
   });
 });
 
 describe('parseRichText: entradas estranhas', () => {
   test('texto vazio não gera token', () => {
-    assert.deepEqual(parseRichText(''), []);
+    expect(parseRichText('')).toEqual([]);
   });
 
-  const literals = [
+  test.each([
     ['marcador sem par', '*sem fechar'],
     ['asteriscos soltos numa conta', '2 * 3 * 4'],
     ['marcadores sem conteúdo', '**** e `` e []()'],
     ['ênfase que começa com espaço', '* errado*'],
     ['link sem chave', '[texto]()'],
-  ] as const;
-
-  for (const [description, input] of literals) {
-    test(`${description} fica como texto`, () => {
-      assert.deepEqual(parseRichText(input), [text(input)]);
-    });
-  }
+  ])('%s fica como texto', (_description, input) => {
+    expect(parseRichText(input)).toEqual([text(input)]);
+  });
 
   // Segurança: o texto não consegue criar link para uma URL própria.
-  const unsafeLinks = [
+  test.each([
     '[clique](javascript:alert(1))',
     '[clique](https://exemplo.com)',
     '[clique](../segredo)',
     '[clique](data:text/html,oi)',
-  ];
-
-  for (const input of unsafeLinks) {
-    test(`não cria link a partir de ${input}`, () => {
-      assert.ok(parseRichText(input).every((token) => token.type !== 'link'));
-    });
-  }
+  ])('não cria link a partir de %s', (input) => {
+    expect(parseRichText(input).map((token) => token.type)).not.toContain('link');
+  });
 
   test('não aninha marcação: o de dentro vale, o de fora fica como texto', () => {
-    assert.deepEqual(parseRichText('**a *b* c**'), [
+    expect(parseRichText('**a *b* c**')).toEqual([
       text('**a '),
       { type: 'emphasis', text: 'b' },
       text(' c**'),
