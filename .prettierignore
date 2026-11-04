@@ -1,0 +1,2 @@
+# O Prettier já ignora o que está no .gitignore. O lock é escrito pelo npm.
+package-lock.json
