@@ -5,6 +5,7 @@ export const ERROR_MESSAGES = {
   UNCAUGHT: 'Erro não tratado na página.',
   UNHANDLED_REJECTION: 'Promise rejeitada sem tratamento.',
   RECOVERABLE: 'O React se recuperou sozinho de um erro.',
+  LANGUAGE_PROVIDER_MISSING: 'useLanguage foi chamado fora do LanguageProvider.',
   UNEXPECTED: 'Erro inesperado.',
 } as const;
 

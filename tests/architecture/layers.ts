@@ -8,6 +8,7 @@ export const LAYERS = [
   'pages',
   'features',
   'components',
+  'i18n',
   'errors',
   'utils',
   'globals',

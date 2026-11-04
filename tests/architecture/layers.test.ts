@@ -31,6 +31,15 @@ describe('regra de camadas', () => {
     assert.match(checkImport('globals/constants.ts', 'utils/language.ts') ?? '', /não pode/);
   });
 
+  // O fallback de erro não pode depender do contexto de idioma, que pode ser a causa da falha.
+  test('errors não depende de i18n, e i18n pode usar errors', () => {
+    assert.match(
+      checkImport('errors/ErrorFallback.tsx', 'i18n/useLanguage.ts') ?? '',
+      /não pode depender de i18n/,
+    );
+    assert.equal(checkImport('i18n/useLanguage.ts', 'errors/AppError.ts'), undefined);
+  });
+
   test('barra import entre features e entre pages', () => {
     assert.match(checkImport('features/hero/Hero.tsx', 'features/stack/Stack.tsx') ?? '', /fatias/);
     assert.match(checkImport('pages/home/Home.tsx', 'pages/project/Project.tsx') ?? '', /fatias/);

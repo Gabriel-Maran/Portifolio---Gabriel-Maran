@@ -2,7 +2,7 @@
   display: grid;
   place-content: center;
   justify-items: center;
-  gap: 12px;
+  gap: 14px;
   min-height: 100vh;
   padding-inline: 16px;
   text-align: center;
@@ -14,7 +14,24 @@
   text-transform: uppercase;
 }
 
-.note {
+.role {
+  font: 700 clamp(22px, 2.4vw, 30px) / 1.2 var(--font-display);
+  text-wrap: balance;
+}
+
+.role em {
+  color: var(--color-accent);
+  font-style: normal;
+}
+
+.lead {
+  max-width: 60ch;
+  color: var(--color-text-soft);
+  font-size: 19px;
+  text-wrap: balance;
+}
+
+.example {
   color: var(--color-text-muted);
-  font: 400 14px / 1.5 var(--font-mono);
+  font: 400 13.5px / 1.45 var(--font-mono);
 }

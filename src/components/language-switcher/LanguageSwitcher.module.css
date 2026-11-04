@@ -1,0 +1,33 @@
+.switcher {
+  display: flex;
+  min-inline-size: 0;
+  margin: 0;
+  padding: 0;
+  border: 1px solid var(--color-border-strong);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.option {
+  min-width: 44px;
+  min-height: 36px;
+  color: var(--color-text-muted);
+  font: 500 13.5px / 1 var(--font-mono);
+  transition:
+    background-color 0.15s,
+    color 0.15s;
+}
+
+.option:hover {
+  color: var(--color-text);
+}
+
+.option[aria-pressed='true'] {
+  background: var(--color-text);
+  color: var(--color-surface);
+}
+
+/* O contêiner corta o que passa da borda, então o contorno de foco fica por dentro do botão. */
+.option:focus-visible {
+  outline-offset: -3px;
+}

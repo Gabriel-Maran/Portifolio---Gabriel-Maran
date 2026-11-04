@@ -1,0 +1,16 @@
+.code {
+  padding: 1px 6px;
+  border-radius: 6px;
+  background: var(--color-code-surface);
+  font: 500 0.88em / 1.4 var(--font-mono);
+}
+
+.link {
+  color: var(--color-text);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.link:hover {
+  color: var(--color-accent);
+}
