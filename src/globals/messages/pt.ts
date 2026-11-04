@@ -1,3 +1,4 @@
+import type { SectionKey, SocialLinkId } from '../constants.ts';
 import { SHARED, type RinhaStat } from './shared.ts';
 
 /*
@@ -21,7 +22,7 @@ export const pt = {
       approach: 'Como resolvo',
       stack: 'Stack',
       contact: 'Contato',
-    },
+    } satisfies Record<SectionKey, string>,
   },
 
   language: {
@@ -215,8 +216,10 @@ export const pt = {
     availability:
       'Hoje sou Desenvolvedor Full Stack Júnior no Grupo Ítalo. Não estou em busca ativa, mas estou aberto a conversar: presencial ou híbrido em Francisco Beltrão, ou remoto de qualquer lugar.',
     emailLabel: 'E-mail',
-    connect: 'Conecte',
-    seeCode: 'Veja o código',
+    socialLabels: {
+      linkedin: 'Conecte',
+      github: 'Veja o código',
+    } satisfies Record<SocialLinkId, string>,
   },
 
   errors: {

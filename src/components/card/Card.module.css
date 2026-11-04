@@ -1,0 +1,29 @@
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+  padding: 28px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  background: var(--color-surface-raised);
+}
+
+.link {
+  transition:
+    transform 0.15s,
+    border-color 0.15s;
+}
+
+.link:hover {
+  transform: translateY(-3px);
+  border-color: var(--color-text);
+}
+
+.title {
+  font: 700 var(--font-size-card) / 1.25 var(--font-display);
+}
+
+.text {
+  color: var(--color-text-soft);
+}

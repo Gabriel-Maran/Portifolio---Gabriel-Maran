@@ -214,8 +214,10 @@ export const en: Messages = {
     availability:
       'I am currently a Junior Full Stack Developer at Grupo Ítalo. I am not actively looking, but I am open to a conversation: on-site or hybrid in Francisco Beltrão, or remote from anywhere.',
     emailLabel: 'Email',
-    connect: 'Connect',
-    seeCode: 'See the code',
+    socialLabels: {
+      linkedin: 'Connect',
+      github: 'See the code',
+    },
   },
 
   errors: {

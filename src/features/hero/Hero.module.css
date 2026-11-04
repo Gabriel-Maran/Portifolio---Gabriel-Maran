@@ -1,10 +1,12 @@
-.shell {
+/* Sem o cubo, que entra na Parte 4, a abertura ganha respiro no topo. */
+.hero {
+  padding-block: clamp(56px, 8vw, 112px) 0;
+}
+
+.inner {
   display: grid;
-  place-content: center;
   justify-items: center;
-  gap: 14px;
-  min-height: 100vh;
-  padding-inline: 16px;
+  gap: 10px;
   text-align: center;
 }
 
@@ -12,6 +14,7 @@
   font: 900 var(--font-size-hero) / 0.98 var(--font-display);
   letter-spacing: -0.02em;
   text-transform: uppercase;
+  text-wrap: balance;
 }
 
 .role {
@@ -31,7 +34,19 @@
   text-wrap: balance;
 }
 
-.example {
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 6px;
+}
+
+.facts {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 4px 22px;
   color: var(--color-text-muted);
-  font: 400 13.5px / 1.45 var(--font-mono);
+  font: 400 14.5px / 1.5 var(--font-mono);
 }

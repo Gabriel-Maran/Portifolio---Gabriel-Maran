@@ -3,10 +3,12 @@ export const SHARED = {
   jobs: {
     grupoItalo: {
       isCurrent: true,
+      showsUploadFlow: true,
       tags: ['Node.js', 'Express', 'React', 'TypeScript', 'PostgreSQL'],
     },
     lpd: {
       isCurrent: false,
+      showsUploadFlow: false,
       tags: ['Power Automate', 'Power Apps', 'SharePoint'],
     },
   },

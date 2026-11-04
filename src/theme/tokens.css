@@ -36,8 +36,20 @@
   --font-size-title: 26px;
   --font-size-card: 21px;
 
+  --content-width: 1152px;
   --layout-gap: 16px;
-  --radius-card: 16px;
+  --space-section: clamp(64px, 8vw, 104px);
   /* Altura da navegação fixa, para a rolagem por âncora não esconder o título. */
   --nav-height: 64px;
+
+  --radius-xs: 6px;
+  --radius-sm: 8px;
+  --radius-md: 10px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+
+  /*
+   * Media queries não aceitam variáveis, então os pontos de quebra ficam escritos nos módulos:
+   * 1040px troca os links pelo menu compacto e 860px leva as grades para uma coluna.
+   */
 }

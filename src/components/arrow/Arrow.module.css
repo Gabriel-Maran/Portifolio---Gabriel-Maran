@@ -1,0 +1,13 @@
+.arrow {
+  display: inline-block;
+  white-space: nowrap;
+  transition: transform 0.15s;
+}
+
+a:hover .right {
+  transform: translateX(4px);
+}
+
+a:hover .down {
+  transform: translateY(3px);
+}

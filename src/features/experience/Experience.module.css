@@ -1,0 +1,94 @@
+.timeline {
+  display: grid;
+  max-width: 960px;
+  margin-inline: auto;
+}
+
+.entry {
+  display: grid;
+  grid-template-columns: 180px minmax(0, 1fr);
+  gap: 12px 36px;
+  padding-block: 28px;
+  border-top: 1px solid var(--color-border);
+}
+
+.entry:last-child {
+  border-bottom: 1px solid var(--color-border);
+}
+
+.when {
+  display: grid;
+  align-content: start;
+  justify-items: start;
+  gap: 8px;
+  color: var(--color-text-muted);
+  font: 400 14.5px / 1.5 var(--font-mono);
+}
+
+.badge {
+  padding: 2px 9px;
+  border-radius: var(--radius-xs);
+  background: var(--color-accent);
+  color: var(--color-on-accent);
+  font: 500 12.5px / 1.5 var(--font-mono);
+}
+
+.body {
+  display: grid;
+  gap: 8px;
+  min-width: 0;
+}
+
+.role {
+  font: 700 var(--font-size-title) / 1.2 var(--font-display);
+}
+
+.course {
+  font: 700 var(--font-size-card) / 1.25 var(--font-display);
+}
+
+.organization {
+  color: var(--color-text-soft);
+  font-weight: 500;
+}
+
+.highlights {
+  display: grid;
+  gap: 8px;
+  color: var(--color-text-soft);
+}
+
+.highlights li {
+  position: relative;
+  padding-left: 18px;
+}
+
+.highlights li::before {
+  content: '';
+  position: absolute;
+  top: 0.62em;
+  left: 0;
+  width: 7px;
+  height: 7px;
+  border-radius: 2px;
+  background: var(--color-text-muted);
+}
+
+.tags {
+  margin-top: 6px;
+}
+
+.educationTitle {
+  padding: 40px 0 12px;
+}
+
+@media (max-width: 860px) {
+  .entry {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .when {
+    display: flex;
+    align-items: center;
+  }
+}

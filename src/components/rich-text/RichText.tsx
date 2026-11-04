@@ -1,4 +1,4 @@
-import { EXTERNAL_URLS } from '../../globals/constants.ts';
+import { EXTERNAL_LINK_PROPS, EXTERNAL_URLS } from '../../globals/constants.ts';
 import { hasKey } from '../../utils/object.ts';
 import { parseRichText, type RichTextToken } from '../../utils/richText.ts';
 import styles from './RichText.module.css';
@@ -26,8 +26,7 @@ function renderToken(token: RichTextToken, key: number) {
           key={key}
           className={styles.link}
           href={EXTERNAL_URLS[token.target]}
-          target="_blank"
-          rel="noopener noreferrer"
+          {...EXTERNAL_LINK_PROPS}
         >
           {token.text}
         </a>

@@ -2,6 +2,7 @@ import {
   CONTACT_EMAIL,
   CONTACT_MAILTO,
   DEFAULT_LANGUAGE,
+  EXTERNAL_LINK_PROPS,
   SOCIAL_LINKS,
 } from '../globals/constants.ts';
 import { messages } from '../globals/messages/index.ts';
@@ -30,7 +31,7 @@ export function ErrorFallback() {
         </li>
         {SOCIAL_LINKS.map((link) => (
           <li key={link.id}>
-            <a href={link.href} target="_blank" rel="noopener noreferrer">
+            <a href={link.href} {...EXTERNAL_LINK_PROPS}>
               {link.label}
             </a>
           </li>

@@ -1,0 +1,8 @@
+/* O exemplo fica no rodapé do card, alinhando os quatro cards pela base. */
+.example {
+  margin-top: auto;
+  padding-top: 12px;
+  border-top: 1px solid var(--color-border);
+  color: var(--color-text-muted);
+  font: 400 13.5px / 1.45 var(--font-mono);
+}

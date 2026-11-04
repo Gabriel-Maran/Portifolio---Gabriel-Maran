@@ -1,0 +1,63 @@
+.flow {
+  margin-top: 14px;
+  padding: 20px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface-raised);
+  color: var(--color-text-soft);
+}
+
+.diagram {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.boxes {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.2;
+}
+
+.participantLabels,
+.stepLabels {
+  fill: currentColor;
+  font-family: var(--font-mono);
+  text-anchor: middle;
+}
+
+.participantLabels {
+  font-size: 16px;
+}
+
+.stepLabels {
+  font-size: 15px;
+}
+
+.lifelines {
+  stroke: currentColor;
+  stroke-width: 1;
+  stroke-dasharray: 3 5;
+  opacity: 0.45;
+}
+
+.arrows {
+  stroke: currentColor;
+  stroke-width: 1.4;
+}
+
+.directArrow {
+  stroke: var(--color-accent);
+  stroke-width: 2.6;
+}
+
+.accent {
+  fill: var(--color-accent);
+}
+
+.caption {
+  margin-top: 10px;
+  color: var(--color-text-muted);
+  font: 400 13.5px / 1.45 var(--font-mono);
+  text-align: center;
+}

@@ -1,24 +1,28 @@
-import { LanguageSwitcher } from '../../components/language-switcher/LanguageSwitcher.tsx';
-import { RichText } from '../../components/rich-text/RichText.tsx';
-import { OWNER_NAME } from '../../globals/constants.ts';
+import { SkipLink } from '../../components/skip-link/SkipLink.tsx';
+import { Footer } from '../../features/footer/Footer.tsx';
+import { Hero } from '../../features/hero/Hero.tsx';
+import { Navigation } from '../../features/navigation/Navigation.tsx';
+import { MAIN_CONTENT_ID } from '../../globals/constants.ts';
 import { useMessages } from '../../i18n/useLanguage.ts';
-import styles from './HomePage.module.css';
+import { HOME_SECTION_IDS, HOME_SECTION_KEYS, HOME_SECTIONS } from './sections.ts';
+import { useActiveSection } from './useActiveSection.ts';
 
-// Tela provisória da Parte 2: mostra a troca de idioma. As seções entram como features na Parte 3.
+// A página só compõe as features e guarda o que elas dividem, como a seção ativa.
 export function HomePage() {
-  const { hero, whatIDo } = useMessages();
+  const { navigation } = useMessages();
+  const activeSection = useActiveSection(HOME_SECTION_IDS);
 
   return (
-    <main className={styles.shell}>
-      <LanguageSwitcher />
-      <h1 className={styles.name}>{OWNER_NAME}</h1>
-      <p className={styles.role}>
-        <RichText text={hero.role} />
-      </p>
-      <p className={styles.lead}>{hero.lead}</p>
-      <p className={styles.example}>
-        <RichText text={whatIDo.items[3]?.example ?? ''} />
-      </p>
-    </main>
+    <>
+      <SkipLink href={`#${MAIN_CONTENT_ID}`}>{navigation.skipToContent}</SkipLink>
+      <Navigation sections={HOME_SECTION_KEYS} activeSection={activeSection} />
+      <main id={MAIN_CONTENT_ID}>
+        <Hero />
+        {HOME_SECTIONS.map(({ key, Component }) => (
+          <Component key={key} />
+        ))}
+      </main>
+      <Footer />
+    </>
   );
 }

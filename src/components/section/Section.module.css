@@ -1,0 +1,29 @@
+.section {
+  padding-block: var(--space-section) 0;
+}
+
+.band {
+  margin-top: var(--space-section);
+  padding-block: var(--space-section);
+}
+
+.header {
+  display: grid;
+  justify-items: center;
+  gap: 10px;
+  max-width: 700px;
+  margin: 0 auto 40px;
+  text-align: center;
+}
+
+.title {
+  font: 900 var(--font-size-section) / 1.06 var(--font-display);
+  letter-spacing: -0.012em;
+  text-wrap: balance;
+}
+
+.subtitle {
+  color: var(--color-text-soft);
+  font-size: 18px;
+  text-wrap: balance;
+}

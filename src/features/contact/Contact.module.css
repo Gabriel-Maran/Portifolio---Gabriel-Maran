@@ -1,0 +1,25 @@
+.card {
+  border-color: var(--color-border-strong);
+}
+
+.email {
+  color: var(--color-text);
+  font: 400 14.5px / 1.4 var(--font-mono);
+  overflow-wrap: anywhere;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.email:hover {
+  color: var(--color-accent);
+}
+
+/* Empurra o fim de cada card para a base, alinhando os três. */
+.bottom {
+  margin-top: auto;
+}
+
+.channel {
+  color: var(--color-text);
+  font: 700 var(--font-size-title) / 1.2 var(--font-display);
+}

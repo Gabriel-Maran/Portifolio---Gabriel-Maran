@@ -7,6 +7,7 @@ export default mergeConfig(
   defineConfig({
     test: {
       restoreMocks: true,
+      unstubGlobals: true,
       projects: [
         {
           extends: true,

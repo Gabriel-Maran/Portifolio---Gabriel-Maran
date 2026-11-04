@@ -1,4 +1,17 @@
 export const ROOT_ELEMENT_ID = 'root';
+export const MAIN_CONTENT_ID = 'topo';
+
+// Âncoras das seções. As features linkam umas para as outras por aqui, sem se importarem.
+export const SECTION_IDS = {
+  whatIDo: 'o-que-faco',
+  experience: 'experiencia',
+  projects: 'projetos',
+  approach: 'como-resolvo',
+  stack: 'stack',
+  contact: 'contato',
+} as const;
+
+export type SectionKey = keyof typeof SECTION_IDS;
 
 export const OWNER_NAME = 'Gabriel Maran';
 
@@ -16,10 +29,15 @@ export const EXTERNAL_URLS = {
 
 export type ExternalUrlKey = keyof typeof EXTERNAL_URLS;
 
+// Link externo abre em outra aba sem dar à página nova acesso a esta (window.opener) nem a origem.
+export const EXTERNAL_LINK_PROPS = { target: '_blank', rel: 'noopener noreferrer' } as const;
+
 export const SOCIAL_LINKS = [
   { id: 'linkedin', label: 'LinkedIn', href: EXTERNAL_URLS.linkedin },
   { id: 'github', label: 'GitHub', href: EXTERNAL_URLS.github },
 ] as const;
+
+export type SocialLinkId = (typeof SOCIAL_LINKS)[number]['id'];
 
 export const LANGUAGES = ['pt', 'en'] as const;
 export type Language = (typeof LANGUAGES)[number];

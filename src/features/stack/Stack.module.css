@@ -1,0 +1,18 @@
+.card {
+  gap: 14px;
+}
+
+.main {
+  display: grid;
+  gap: 2px;
+  font: 700 var(--font-size-card) / 1.4 var(--font-display);
+}
+
+/* "Também conheço" fica no rodapé do card, alinhando os três pela base. */
+.also {
+  display: grid;
+  gap: 8px;
+  margin-top: auto;
+  padding-top: 12px;
+  border-top: 1px solid var(--color-border);
+}
