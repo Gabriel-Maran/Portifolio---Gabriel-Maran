@@ -7,8 +7,15 @@ updates:
     directory: /
     schedule:
       interval: weekly
+      day: monday
+      time: '09:00'
+      timezone: America/Sao_Paulo
     cooldown:
       default-days: 7
+    # Mensagens no padrão do projeto: "chore(deps): ..." e "chore(deps-dev): ...".
+    commit-message:
+      prefix: chore
+      include: scope
     groups:
       # Versões menores e correções chegam num PR só; uma versão major continua em PR próprio.
       minor-and-patch:
@@ -19,5 +26,15 @@ updates:
     directory: /
     schedule:
       interval: weekly
+      day: monday
+      time: '09:00'
+      timezone: America/Sao_Paulo
     cooldown:
       default-days: 7
+    commit-message:
+      prefix: chore
+      include: scope
+    groups:
+      # Todas as actions num PR só, para o CI ser atualizado de uma vez.
+      actions:
+        patterns: ['*']
