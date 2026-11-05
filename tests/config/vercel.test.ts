@@ -47,13 +47,12 @@ describe('endereço de cada idioma no vercel.json', () => {
 
   // Com cleanUrls, "/en" serve o en.html que o build gera (ver pageFileName em config/prerender.ts).
   test('/en serve o en.html, e /en/ redireciona para /en', () => {
-    expect(config.cleanUrls).toBe(true);
-    expect(config.trailingSlash).toBe(false);
+    expect(config).toMatchObject({ cleanUrls: true, trailingSlash: false });
   });
 
   // Regressão: uma reescrita por ?lang=en fez o cache da Vercel, que ignora a query, guardar o
   // inglês e servi-lo na raiz para todo mundo. O idioma tem que vir só do caminho.
   test('nenhuma reescrita escolhe a página', () => {
-    expect(config.rewrites).toBeUndefined();
+    expect(config).not.toHaveProperty('rewrites');
   });
 });
