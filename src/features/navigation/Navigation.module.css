@@ -61,9 +61,16 @@
   padding: 0 12px;
   border: 1px solid var(--color-border-strong);
   border-radius: var(--radius-md);
-  font: 500 13.5px / 1 var(--font-mono);
+  font: 500 var(--font-size-small) / 1 var(--font-mono);
   cursor: pointer;
   list-style: none;
+}
+
+/* No toque, o dedo precisa de 44px de altura (WCAG 2.5.5). */
+@media (pointer: coarse) {
+  .menuToggle {
+    min-height: 44px;
+  }
 }
 
 .menuToggle::-webkit-details-marker {

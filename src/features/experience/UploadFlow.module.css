@@ -58,6 +58,6 @@
 .caption {
   margin-top: 10px;
   color: var(--color-text-muted);
-  font: 400 13.5px / 1.45 var(--font-mono);
+  font: 400 var(--font-size-small) / 1.45 var(--font-mono);
   text-align: center;
 }

@@ -13,10 +13,10 @@ test('mostra forte, ênfase e código como elementos', () => {
 });
 
 test('link por chave abre em outra aba, sem dar acesso à página de origem', () => {
-  render(<RichText text="um [app acadêmico](academicApp)" />);
+  render(<RichText text="o [PetShop Manager](petShopCode)" />);
 
-  const link = screen.getByRole('link', { name: 'app acadêmico' });
-  expect(link.getAttribute('href')).toBe(EXTERNAL_URLS.academicApp);
+  const link = screen.getByRole('link', { name: 'PetShop Manager' });
+  expect(link.getAttribute('href')).toBe(EXTERNAL_URLS.petShopCode);
   expect(link.getAttribute('target')).toBe('_blank');
   expect(link.getAttribute('rel')).toBe('noopener noreferrer');
 });

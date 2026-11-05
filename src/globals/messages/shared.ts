@@ -1,3 +1,38 @@
+import type { ExternalUrlKey, ProjectLinkKind } from '../constants.ts';
+
+interface OngoingProject {
+  name: string;
+  tags: readonly string[];
+  /** Chave em EXTERNAL_URLS de cada link. Sem `code`, o card avisa que o código é privado. */
+  links: Partial<Record<ProjectLinkKind, ExternalUrlKey>>;
+}
+
+// Tipado por fora do `as const` para todos os projetos terem a mesma forma, com ou sem link.
+const ONGOING_PROJECTS: Readonly<
+  Record<'petShop' | 'expenses' | 'tickets' | 'miniReact', OngoingProject>
+> = {
+  petShop: {
+    name: 'PetShop Manager',
+    tags: ['React Native', 'Expo', 'TypeScript', 'SQLite'],
+    links: { code: 'petShopCode', post: 'petShopPost' },
+  },
+  expenses: {
+    name: 'Controle de Gastos',
+    tags: ['Node.js', 'Express', 'TypeScript', 'Zod', 'Prisma', 'PostgreSQL'],
+    links: {},
+  },
+  tickets: {
+    name: 'Plataforma de Ingressos',
+    tags: ['Node.js', 'Express', 'TypeScript', 'PostgreSQL', 'JWT'],
+    links: {},
+  },
+  miniReact: {
+    name: 'Mini React',
+    tags: ['JavaScript', 'Virtual DOM'],
+    links: { code: 'miniReactCode' },
+  },
+};
+
 // Valores iguais em todos os idiomas. Os dicionários usam estes, para não repetir nem divergir.
 export const SHARED = {
   jobs: {
@@ -21,25 +56,7 @@ export const SHARED = {
       tags: ['Kotlin', 'Spring Boot', 'PostgreSQL', 'PDFBox'],
       stats: { endpoints: 48, days: 38, people: 4 },
     },
-    // Em andamento e com código ainda privado: entram sem link, cada um com o estado atual.
-    inProgress: {
-      petShop: {
-        name: 'PetShop Manager',
-        tags: ['React Native', 'Expo', 'TypeScript', 'SQLite'],
-      },
-      expenses: {
-        name: 'Controle de Gastos',
-        tags: ['Node.js', 'Express', 'TypeScript', 'Zod', 'Prisma', 'PostgreSQL'],
-      },
-      tickets: {
-        name: 'Plataforma de Ingressos',
-        tags: ['Node.js', 'Express', 'TypeScript', 'PostgreSQL', 'JWT'],
-      },
-      miniReact: {
-        name: 'Mini React',
-        tags: ['JavaScript', 'Virtual DOM'],
-      },
-    },
+    inProgress: ONGOING_PROJECTS,
   },
   stack: {
     frontend: {

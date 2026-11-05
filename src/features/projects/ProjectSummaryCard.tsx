@@ -1,8 +1,15 @@
+import { Arrow } from '../../components/arrow/Arrow.tsx';
 import { BulletList } from '../../components/bullet-list/BulletList.tsx';
+import { ButtonLink } from '../../components/button/Button.tsx';
 import { Card, CardText, CardTitle } from '../../components/card/Card.tsx';
 import { Label } from '../../components/label/Label.tsx';
 import { TagList } from '../../components/tag-list/TagList.tsx';
 import styles from './ProjectSummaryCard.module.css';
+
+interface ProjectLink {
+  href: string;
+  label: string;
+}
 
 export interface ProjectSummaryCardProps {
   category: string;
@@ -13,8 +20,10 @@ export interface ProjectSummaryCardProps {
   tags: readonly string[];
   /** Onde o projeto está agora, como "Etapa 4 de 10". */
   status: string;
-  /** Aviso no lugar do link do código enquanto o repositório for privado. */
-  codeNote: string;
+  /** Links externos, como o código e o post do projeto. */
+  links: readonly ProjectLink[];
+  /** Aviso mostrado no lugar dos links quando o código ainda é privado. */
+  privateNote?: string;
 }
 
 /** Card de projeto em andamento: sem imagem nem números, com o estado atual no rodapé. */
@@ -25,7 +34,8 @@ export function ProjectSummaryCard({
   highlights,
   tags,
   status,
-  codeNote,
+  links,
+  privateNote,
 }: ProjectSummaryCardProps) {
   return (
     <Card className={styles.card}>
@@ -36,7 +46,16 @@ export function ProjectSummaryCard({
       <TagList items={tags} />
       <footer className={styles.footer}>
         <p className={styles.status}>{status}</p>
-        <p className={styles.codeNote}>{codeNote}</p>
+        {links.length > 0 ? (
+          <div className={styles.links}>
+            {links.map((link) => (
+              <ButtonLink key={link.href} size="small" href={link.href} external>
+                {link.label} <Arrow />
+              </ButtonLink>
+            ))}
+          </div>
+        ) : null}
+        {privateNote ? <p className={styles.privateNote}>{privateNote}</p> : null}
       </footer>
     </Card>
   );

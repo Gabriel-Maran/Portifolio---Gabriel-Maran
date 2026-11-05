@@ -22,12 +22,18 @@ export const CONTACT_MAILTO = `mailto:${CONTACT_EMAIL}`;
 export const EXTERNAL_URLS = {
   linkedin: 'https://www.linkedin.com/in/gabriel-enzo-libero-maran-b386b824b/',
   github: 'https://github.com/Gabriel-Maran',
-  academicApp: 'https://github.com/Gabriel-Maran/Projeto_GeraPerfilRandom_ChatBot-Unipar',
   rinhaVideo: 'https://www.linkedin.com/feed/update/urn:li:activity:7402519894996684800/',
   rinhaCode: 'https://github.com/Gabriel-Maran/rinha-de-ratos-Web',
+  petShopCode: 'https://github.com/Gabriel-Maran/PetShopManager',
+  petShopPost: 'https://www.linkedin.com/feed/update/urn:li:activity:7486355663841943552/',
+  miniReactCode: 'https://github.com/Gabriel-Maran/Mini-React',
 } as const;
 
 export type ExternalUrlKey = keyof typeof EXTERNAL_URLS;
+
+// Links que um projeto em andamento pode ter, na ordem em que aparecem no card.
+export const PROJECT_LINK_KINDS = ['code', 'post'] as const;
+export type ProjectLinkKind = (typeof PROJECT_LINK_KINDS)[number];
 
 // Link externo abre em outra aba sem dar à página nova acesso a esta (window.opener) nem a origem.
 export const EXTERNAL_LINK_PROPS = { target: '_blank', rel: 'noopener noreferrer' } as const;

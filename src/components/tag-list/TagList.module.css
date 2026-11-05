@@ -9,5 +9,5 @@
   border: 1px solid var(--color-border);
   border-radius: var(--radius-sm);
   color: var(--color-text-soft);
-  font: 400 13.5px / 1.4 var(--font-mono);
+  font: 400 var(--font-size-small) / 1.4 var(--font-mono);
 }

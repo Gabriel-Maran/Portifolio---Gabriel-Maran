@@ -30,7 +30,7 @@
   border-radius: var(--radius-xs);
   background: var(--color-accent);
   color: var(--color-on-accent);
-  font: 500 12.5px / 1.5 var(--font-mono);
+  font: 500 var(--font-size-small) / 1.5 var(--font-mono);
 }
 
 .body {
@@ -57,7 +57,7 @@
 }
 
 .educationTitle {
-  padding: 40px 0 12px;
+  padding: var(--space-block) 0 12px;
 }
 
 @media (max-width: 860px) {

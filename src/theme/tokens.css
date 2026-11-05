@@ -42,10 +42,14 @@
   --font-size-project: clamp(28px, 3vw, 34px);
   --font-size-title: 26px;
   --font-size-card: 21px;
+  /* Texto pequeno em fonte mono: rótulos, tags e legendas. No celular sobe para 14px. */
+  --font-size-small: 13.5px;
 
   --content-width: 1152px;
   --layout-gap: 16px;
   --space-section: clamp(64px, 8vw, 104px);
+  /* Respiro entre o título de um bloco e o que vem antes ou depois dele. */
+  --space-block: 40px;
   /* Altura da navegação fixa, para a rolagem por âncora não esconder o título. */
   --nav-height: 64px;
 
@@ -59,4 +63,11 @@
    * Media queries não aceitam variáveis, então os pontos de quebra ficam escritos nos módulos:
    * 1040px troca os links pelo menu compacto e 860px leva as grades para uma coluna.
    */
+}
+
+/* Em tela estreita, a fonte mono abaixo de 14px cansa a leitura. */
+@media (max-width: 860px) {
+  :root {
+    --font-size-small: 14px;
+  }
 }

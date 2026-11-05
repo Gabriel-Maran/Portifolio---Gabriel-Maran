@@ -1,4 +1,4 @@
-import type { SectionKey, SocialLinkId } from '../constants.ts';
+import type { ProjectLinkKind, SectionKey, SocialLinkId } from '../constants.ts';
 import { SHARED, type RinhaStat } from './shared.ts';
 
 /*
@@ -85,8 +85,7 @@ export const pt = {
         title: 'Apps e sites',
         description:
           'Apps com React Native e Expo, inclusive para uso sem internet, e sites rápidos, acessíveis e em dois idiomas.',
-        example:
-          'Exemplos: o PetShop Manager, este site e um [app acadêmico que consome APIs](academicApp)',
+        example: 'Exemplo: o [PetShop Manager](petShopCode)',
       },
     ],
   },
@@ -104,7 +103,7 @@ export const pt = {
         highlights: [
           'Desenvolvo e mantenho sistemas internos: portal de ferramentas, relatórios gerenciais, gestão de arquivos da engenharia e acompanhamento de metas.',
           'Criei uma arquitetura por features para os relatórios. Cada relatório novo já nasce com cores, componentes, tratamento de erros e chamadas de API prontos.',
-          'Na gestão de arquivos, envios grandes vão direto para a nuvem, sem passar pelo servidor, e nada é apagado de vez: há lixeira com recuperação.',
+          'Na gestão de arquivos, envios grandes vão direto para a nuvem, sem passar pelo servidor, e nada é apagado de vez: há lixeira com recuperação (o chamado *soft delete*).',
           'Padronizei o tratamento de erros no back-end, ajudei a definir a stack interna e documento cada projeto, inclusive o contexto de arquitetura para desenvolvimento com IA.',
         ],
       },
@@ -176,18 +175,21 @@ export const pt = {
         'Histórico de uma batalha no jogo, com o dano causado em cada ataque e a vida dos dois ratos na rodada 6.',
       imageCaption: 'Histórico por rodada, gerado pelo motor de batalha que construí',
     },
-    inProgressTitle: 'Em construção',
+    inProgressTitle: 'Em andamento',
     privateCode: 'Código privado por enquanto',
+    linkLabels: {
+      code: 'Ver o código',
+      post: 'Ver o post no LinkedIn',
+    } satisfies Record<ProjectLinkKind, string>,
     inProgress: [
       {
         ...SHARED.projects.inProgress.petShop,
-        category: 'App mobile · Em equipe',
+        category: 'Projeto acadêmico · App mobile',
         description:
-          'App para pet shops organizarem donos, pets e agenda sem depender de internet. Os planos remarcam o próximo atendimento sozinhos.',
+          'App para um pet shop organizar donos, pets e agenda sem depender de internet. Os planos remarcam o próximo atendimento sozinhos.',
         highlights: [
           'Banco no próprio celular, com 8 triggers no SQLite para a remarcação automática e para ativar ou desativar dono e pets em cascata.',
           'Seis relatórios, como dias e horários mais atendidos e pets há mais tempo sem visita, com o telefone do dono.',
-          'Backup do banco em arquivo, exportado e importado pelo próprio celular.',
         ],
         status: 'Próximo passo: reorganizar a arquitetura em pull requests públicos.',
       },
@@ -197,8 +199,7 @@ export const pt = {
         description:
           'API para gastos divididos entre casal, amigos de viagem ou república: quem pagou, de quem é cada parte e quem deve para quem.',
         highlights: [
-          'Divisão igual, por porcentagem ou por valor exato, com parcelamento e acertos com transferências sugeridas.',
-          'Orçamentos por pessoa e por categoria, em períodos semanais, mensais ou anuais. O que estoura num período sai do seguinte.',
+          'Divisão igual, por porcentagem ou por valor exato, parcelamento, acertos e orçamentos por pessoa e por categoria.',
           'Papéis com autorização em camadas, histórico de alterações e mais de 300 testes automatizados.',
         ],
         status: 'Back-end em 6 de 7 partes. O front-end vem depois.',
@@ -210,8 +211,7 @@ export const pt = {
           'API para criar eventos presenciais, híbridos ou online e vender ingressos por lotes, com um ingresso e um QR code por participante.',
         highlights: [
           'O banco nunca vende além do lote: um trigger reserva a vaga de forma atômica e recusa o ingresso quando o lote esgota.',
-          'Pagamento confirmado por webhook, com o segredo comparado em tempo constante.',
-          'Login com token de acesso e de renovação. O banco guarda só o hash da senha e do token, e o login não revela se o e-mail existe.',
+          'O banco guarda só o hash da senha e do token, o login não revela se o e-mail existe e o webhook de pagamento compara o segredo em tempo constante.',
         ],
         status: 'Em desenvolvimento: a API vem primeiro.',
       },
@@ -223,7 +223,6 @@ export const pt = {
         highlights: [
           'Prontos: `createElement`, Virtual DOM, `render` e componentes de função.',
           'Próximos: estado, reconciliação, listas com `key`, efeitos e Fiber.',
-          'Cada etapa fecha com perguntas que preciso responder sem consultar nada.',
         ],
         status: 'Etapa 4 de 10.',
       },

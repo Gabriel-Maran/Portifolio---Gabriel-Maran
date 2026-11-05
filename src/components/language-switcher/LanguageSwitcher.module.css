@@ -12,7 +12,7 @@
   min-width: 44px;
   min-height: 36px;
   color: var(--color-text-muted);
-  font: 500 13.5px / 1 var(--font-mono);
+  font: 500 var(--font-size-small) / 1 var(--font-mono);
   transition:
     background-color 0.15s,
     color 0.15s;
@@ -30,4 +30,11 @@
 /* O contêiner corta o que passa da borda, então o contorno de foco fica por dentro do botão. */
 .option:focus-visible {
   outline-offset: -3px;
+}
+
+/* No toque, o dedo precisa de 44px de altura (WCAG 2.5.5). */
+@media (pointer: coarse) {
+  .option {
+    min-height: 44px;
+  }
 }

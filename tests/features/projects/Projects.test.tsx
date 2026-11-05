@@ -1,15 +1,27 @@
 import { screen, within } from '@testing-library/react';
 import { describe, expect, test } from 'vitest';
 import { Projects } from '../../../src/features/projects/Projects.tsx';
-import { EXTERNAL_URLS, LANGUAGES } from '../../../src/globals/constants.ts';
+import { EXTERNAL_URLS, LANGUAGES, PROJECT_LINK_KINDS } from '../../../src/globals/constants.ts';
 import { messages } from '../../../src/globals/messages/index.ts';
 import { renderWithProviders } from '../../support/renderWithProviders.tsx';
+
+// O card de um projeto em andamento, achado pelo título dele.
+function cardOf(name: string) {
+  const card = screen.getByRole('heading', { level: 4, name }).closest('article');
+  if (!card) throw new Error(`O card de ${name} deveria existir.`);
+  return card;
+}
+
+const hrefsIn = (card: HTMLElement) =>
+  within(card)
+    .queryAllByRole('link')
+    .map((link) => link.getAttribute('href'));
 
 describe.each(LANGUAGES)('projetos em %s', (language) => {
   const { projects } = messages[language];
   const url = language === 'en' ? '/?lang=en' : '/';
 
-  test('os projetos em construção ficam abaixo de um título próprio, um h4 para cada', () => {
+  test('os projetos em andamento ficam abaixo de um título próprio, um h4 para cada', () => {
     renderWithProviders(<Projects />, { url });
 
     expect(screen.getByRole('heading', { level: 3, name: projects.inProgressTitle })).toBeTruthy();
@@ -18,25 +30,54 @@ describe.each(LANGUAGES)('projetos em %s', (language) => {
     );
   });
 
-  test('cada projeto em construção mostra o estado e avisa que o código é privado', () => {
+  test('cada projeto mostra o estado e os links que tem, na ordem combinada', () => {
     renderWithProviders(<Projects />, { url });
 
     for (const project of projects.inProgress) {
-      const card = screen.getByRole('heading', { level: 4, name: project.name }).closest('article');
-      if (!card) throw new Error(`O card de ${project.name} deveria existir.`);
+      const card = cardOf(project.name);
       expect(within(card).getByText(project.status)).toBeTruthy();
-      expect(within(card).getByText(projects.privateCode)).toBeTruthy();
-      expect(within(card).queryAllByRole('link')).toEqual([]);
+      const expected = PROJECT_LINK_KINDS.flatMap((kind) => {
+        const urlKey = project.links[kind];
+        return urlKey ? [EXTERNAL_URLS[urlKey]] : [];
+      });
+      expect(hrefsIn(card)).toEqual(expected);
+    }
+  });
+
+  test('só o projeto sem código aberto avisa que o código é privado', () => {
+    renderWithProviders(<Projects />, { url });
+
+    for (const project of projects.inProgress) {
+      const note = within(cardOf(project.name)).queryByText(projects.privateCode);
+      expect(note !== null).toBe(!project.links.code);
     }
   });
 });
 
-test('só o projeto entregue tem links externos, para o vídeo e o código', () => {
+test('o PetShop Manager linka o código e o post, e o Mini React só o código', () => {
+  renderWithProviders(<Projects />);
+  const { linkLabels } = messages.pt.projects;
+
+  const petShop = cardOf('PetShop Manager');
+
+  expect(within(petShop).getByRole('link', { name: linkLabels.code }).getAttribute('href')).toBe(
+    EXTERNAL_URLS.petShopCode,
+  );
+  expect(within(petShop).getByRole('link', { name: linkLabels.post }).getAttribute('href')).toBe(
+    EXTERNAL_URLS.petShopPost,
+  );
+  expect(hrefsIn(cardOf('Mini React'))).toEqual([EXTERNAL_URLS.miniReactCode]);
+});
+
+test('todo link externo da seção abre em outra aba com rel seguro', () => {
   renderWithProviders(<Projects />);
 
-  const externalLinks = screen
+  const external = screen
     .getAllByRole('link')
-    .map((link) => link.getAttribute('href'))
-    .filter((href) => !href?.startsWith('#'));
-  expect(externalLinks).toEqual([EXTERNAL_URLS.rinhaVideo, EXTERNAL_URLS.rinhaCode]);
+    .filter((link) => !link.getAttribute('href')?.startsWith('#'));
+  expect(external.length).toBeGreaterThan(0);
+  for (const link of external) {
+    expect(link.getAttribute('target')).toBe('_blank');
+    expect(link.getAttribute('rel')).toBe('noopener noreferrer');
+  }
 });

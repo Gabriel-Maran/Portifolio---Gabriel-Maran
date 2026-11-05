@@ -1,5 +1,5 @@
-/* Separa o projeto entregue dos que estão em construção, com o mesmo respiro do título da seção. */
+/* Separa o projeto entregue dos que estão em andamento, com o mesmo respiro do título da seção. */
 .groupTitle {
-  padding: 40px 0 16px;
+  padding: var(--space-block) 0 16px;
   text-align: center;
 }

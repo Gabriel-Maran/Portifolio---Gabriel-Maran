@@ -2,7 +2,13 @@ import { Grid } from '../../components/grid/Grid.tsx';
 import { Label } from '../../components/label/Label.tsx';
 import { Section } from '../../components/section/Section.tsx';
 import { SectionGlyph } from '../../cube/SectionGlyph.tsx';
-import { EXTERNAL_URLS, SECTION_IDS } from '../../globals/constants.ts';
+import {
+  EXTERNAL_URLS,
+  PROJECT_LINK_KINDS,
+  SECTION_IDS,
+  type ExternalUrlKey,
+  type ProjectLinkKind,
+} from '../../globals/constants.ts';
 import { useMessages } from '../../i18n/useLanguage.ts';
 import { hasKey } from '../../utils/object.ts';
 import rinhaHistoryImage from './assets/rinha-historico.jpg';
@@ -12,6 +18,17 @@ import { ProjectSummaryCard } from './ProjectSummaryCard.tsx';
 
 // Tamanho real da imagem, para o navegador reservar o espaço e a página não pular ao carregar.
 const RINHA_IMAGE_SIZE = { width: 860, height: 640 } as const;
+
+/** Os links que o projeto tem, na ordem de PROJECT_LINK_KINDS, já com a URL e o texto. */
+function projectLinks(
+  urlKeys: Partial<Record<ProjectLinkKind, ExternalUrlKey>>,
+  labels: Record<ProjectLinkKind, string>,
+) {
+  return PROJECT_LINK_KINDS.flatMap((kind) => {
+    const urlKey = urlKeys[kind];
+    return urlKey ? [{ href: EXTERNAL_URLS[urlKey], label: labels[kind] }] : [];
+  });
+}
 
 export function Projects() {
   const { projects } = useMessages();
@@ -58,7 +75,8 @@ export function Projects() {
             highlights={project.highlights}
             tags={project.tags}
             status={project.status}
-            codeNote={projects.privateCode}
+            links={projectLinks(project.links, projects.linkLabels)}
+            privateNote={project.links.code ? undefined : projects.privateCode}
           />
         ))}
       </Grid>
