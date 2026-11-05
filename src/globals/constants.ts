@@ -48,14 +48,16 @@ export type SocialLinkId = (typeof SOCIAL_LINKS)[number]['id'];
 export const LANGUAGES = ['pt', 'en'] as const;
 export type Language = (typeof LANGUAGES)[number];
 export const DEFAULT_LANGUAGE: Language = 'pt';
-/** Idioma do HTML gerado no build. O navegador só hidrata esse HTML quando a visita é nesse idioma. */
-export const PRERENDERED_LANGUAGE: Language = DEFAULT_LANGUAGE;
 
 // O nome de cada idioma fica na própria língua, então não muda com o idioma da página.
+// `tag` vai no atributo lang e no hreflang; `ogLocale` é o formato do Open Graph.
 export const LANGUAGE_OPTIONS = {
-  pt: { short: 'PT', name: 'Português', tag: 'pt-BR' },
-  en: { short: 'EN', name: 'English', tag: 'en' },
-} as const satisfies Record<Language, { short: string; name: string; tag: string }>;
+  pt: { short: 'PT', name: 'Português', tag: 'pt-BR', ogLocale: 'pt_BR' },
+  en: { short: 'EN', name: 'English', tag: 'en', ogLocale: 'en_US' },
+} as const satisfies Record<
+  Language,
+  { short: string; name: string; tag: string; ogLocale: string }
+>;
 
 export const LANGUAGE_QUERY_PARAM = 'lang';
 export const LANGUAGE_STORAGE_KEY = 'language';

@@ -4,8 +4,9 @@ import { App } from './app/App.tsx';
 import { AppError } from './errors/AppError.ts';
 import { installGlobalErrorHandlers } from './errors/installGlobalErrorHandlers.ts';
 import { rootErrorHandlers } from './errors/rootErrorHandlers.ts';
-import { PRERENDERED_LANGUAGE, ROOT_ELEMENT_ID } from './globals/constants.ts';
+import { ROOT_ELEMENT_ID } from './globals/constants.ts';
 import { readInitialLanguage } from './i18n/initialLanguage.ts';
+import { parseLanguage } from './utils/language.ts';
 import './theme/index.css';
 
 installGlobalErrorHandlers();
@@ -21,11 +22,13 @@ const app = (
 );
 
 /*
- * O build deixa a página pronta no HTML, em PRERENDERED_LANGUAGE. Se a visita é nesse idioma, o
- * React só liga os eventos no que já está na tela. Em outro idioma (ou no dev, com o #root
- * vazio), ele desenha a página do zero no lugar do HTML gerado.
+ * O build deixa a página pronta no HTML, um arquivo por idioma, e o lang do <html> diz qual é.
+ * Se a visita é nesse idioma, o React só liga os eventos no que já está na tela. Se não (como o
+ * inglês salvo de uma visita anterior, abrindo a página em português) ou no dev, com o #root
+ * vazio, ele desenha a página do zero no lugar do HTML gerado.
  */
-if (rootElement.hasChildNodes() && language === PRERENDERED_LANGUAGE) {
+const htmlLanguage = parseLanguage(document.documentElement.lang);
+if (rootElement.hasChildNodes() && language === htmlLanguage) {
   hydrateRoot(rootElement, app, rootErrorHandlers);
 } else {
   createRoot(rootElement, rootErrorHandlers).render(app);

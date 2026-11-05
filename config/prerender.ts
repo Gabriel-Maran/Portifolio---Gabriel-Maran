@@ -2,13 +2,28 @@ import { readdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { basename, join, resolve } from 'node:path';
 import { pathToFileURL } from 'node:url';
 import { build, type Plugin, type ResolvedConfig } from 'vite';
-import { ROOT_ELEMENT_ID } from '../src/globals/constants.ts';
+import {
+  DEFAULT_LANGUAGE,
+  LANGUAGE_OPTIONS,
+  LANGUAGES,
+  ROOT_ELEMENT_ID,
+  type Language,
+} from '../src/globals/constants.ts';
+import { messages } from '../src/globals/messages/index.ts';
+import { pageUrl } from './seo.ts';
+import { SITE_URL } from './site.ts';
 
 /** O ponto de montagem vazio do index.html, onde o HTML gerado entra. */
 export const ROOT_PLACEHOLDER = `<div id="${ROOT_ELEMENT_ID}"></div>`;
 
 // Fica dentro do projeto para o build de servidor achar o react no node_modules.
 const SERVER_OUT_DIR = 'node_modules/.tmp/prerender';
+
+/**
+ * Arquivo da página de cada idioma no build, como "index.en.html". Não existe index.html: na
+ * Vercel, um arquivo na raiz venceria a regra do vercel.json que escolhe o idioma pelo ?lang.
+ */
+export const pageFileName = (language: Language) => `index.${language}.html`;
 
 /** Põe o HTML da página dentro do ponto de montagem. Falha se ele não aparecer uma vez só. */
 export function injectAppHtml(indexHtml: string, appHtml: string): string {
@@ -20,8 +35,85 @@ export function injectAppHtml(indexHtml: string, appHtml: string): string {
   return indexHtml.replace(ROOT_PLACEHOLDER, () => `<div id="${ROOT_ELEMENT_ID}">${appHtml}</div>`);
 }
 
+/** O que muda no <head> de um idioma para outro, incluindo a prévia de link (Open Graph). */
+export interface PageHead {
+  htmlLang: string;
+  title: string;
+  description: string;
+  url: string;
+  locale: string;
+  localeAlternate: string;
+  imageAlt: string;
+}
+
+export function pageHead(language: Language, siteUrl: string = SITE_URL): PageHead {
+  const { meta } = messages[language];
+  // Com dois idiomas, o alternativo é o outro.
+  const alternate = LANGUAGES.find((candidate) => candidate !== language) ?? language;
+  return {
+    htmlLang: LANGUAGE_OPTIONS[language].tag,
+    title: meta.title,
+    description: meta.description,
+    url: pageUrl(siteUrl, language),
+    locale: LANGUAGE_OPTIONS[language].ogLocale,
+    localeAlternate: LANGUAGE_OPTIONS[alternate].ogLocale,
+    imageAlt: meta.imageAlt,
+  };
+}
+
+const escapeAttribute = (value: string) =>
+  value
+    .replaceAll('&', '&amp;')
+    .replaceAll('"', '&quot;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;');
+
+/** Troca um trecho exato, conferindo quantas vezes ele aparece. Sem regex nem padrões de "$". */
+function replaceExact(html: string, search: string, replacement: string, expected: number): string {
+  const parts = html.split(search);
+  if (parts.length - 1 !== expected) {
+    throw new Error(`Esperava ${expected}× "${search}" no index.html, e há ${parts.length - 1}.`);
+  }
+  return parts.join(replacement);
+}
+
+/**
+ * Passa o <head> do index.html de um idioma para outro: lang, título, descrição e as tags de
+ * prévia de link. Falha se algum valor não estiver onde se espera, para o build não sair com
+ * metade da página em outro idioma.
+ */
+export function localizeHead(html: string, from: PageHead, to: PageHead): string {
+  const value = escapeAttribute;
+  const steps: Array<[search: string, replacement: string, expected: number]> = [
+    // Com o "<html", porque os links de hreflang="pt-BR" também contêm lang="pt-BR".
+    [`<html lang="${from.htmlLang}"`, `<html lang="${to.htmlLang}"`, 1],
+    [`<title>${value(from.title)}</title>`, `<title>${value(to.title)}</title>`, 1],
+    // og:title
+    [`content="${value(from.title)}"`, `content="${value(to.title)}"`, 1],
+    // description e og:description
+    [`content="${value(from.description)}"`, `content="${value(to.description)}"`, 2],
+    [`content="${value(from.url)}"`, `content="${value(to.url)}"`, 1],
+    [`content="${value(from.imageAlt)}"`, `content="${value(to.imageAlt)}"`, 1],
+    [
+      `property="og:locale" content="${from.locale}"`,
+      `property="og:locale" content="${to.locale}"`,
+      1,
+    ],
+    [
+      `property="og:locale:alternate" content="${from.localeAlternate}"`,
+      `property="og:locale:alternate" content="${to.localeAlternate}"`,
+      1,
+    ],
+  ];
+  return steps.reduce(
+    (current, [search, replacement, expected]) =>
+      replaceExact(current, search, replacement, expected),
+    html,
+  );
+}
+
 interface PrerenderModule {
-  renderPage: () => string;
+  renderPage: (language: Language) => string;
 }
 
 const isPrerenderModule = (value: unknown): value is PrerenderModule =>
@@ -41,10 +133,11 @@ function findServerEntry(outDir: string, entry: string): string {
 }
 
 /**
- * Depois do build do navegador, faz um build de servidor da entrada, gera o HTML da página e o
- * põe no index.html. O navegador então hidrata esse HTML em vez de montar a página do zero.
+ * Depois do build do navegador, faz um build de servidor da entrada e gera uma página por idioma
+ * a partir do index.html: o HTML de cada idioma dentro do #root e o <head> traduzido. O navegador
+ * então hidrata esse HTML em vez de montar a página do zero.
  */
-export function prerender(entry: string): Plugin {
+export function prerender(entry: string, siteUrl: string = SITE_URL): Plugin {
   let config: ResolvedConfig | undefined;
 
   return {
@@ -72,9 +165,17 @@ export function prerender(entry: string): Plugin {
         if (!isPrerenderModule(serverModule)) {
           throw new Error(`${entry} precisa exportar a função renderPage.`);
         }
-        const indexPath = resolve(config.root, config.build.outDir, 'index.html');
-        const indexHtml = readFileSync(indexPath, 'utf8');
-        writeFileSync(indexPath, injectAppHtml(indexHtml, serverModule.renderPage()));
+        const outDir = resolve(config.root, config.build.outDir);
+        const indexPath = join(outDir, 'index.html');
+        const template = readFileSync(indexPath, 'utf8');
+        const defaultHead = pageHead(DEFAULT_LANGUAGE, siteUrl);
+
+        for (const language of LANGUAGES) {
+          const page = injectAppHtml(template, serverModule.renderPage(language));
+          const localized = localizeHead(page, defaultHead, pageHead(language, siteUrl));
+          writeFileSync(join(outDir, pageFileName(language)), localized);
+        }
+        rmSync(indexPath);
       } finally {
         rmSync(serverOutDir, { recursive: true, force: true });
       }

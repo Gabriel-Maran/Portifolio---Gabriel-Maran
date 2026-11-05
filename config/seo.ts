@@ -13,7 +13,7 @@ interface LanguageAlternate {
   href: string;
 }
 
-const pageUrl = (siteUrl: string, language: Language) =>
+export const pageUrl = (siteUrl: string, language: Language) =>
   language === DEFAULT_LANGUAGE ? `${siteUrl}/` : `${siteUrl}/?${LANGUAGE_QUERY_PARAM}=${language}`;
 
 /** Uma URL por idioma, mais o x-default para quem não usa nenhum dos dois. */
