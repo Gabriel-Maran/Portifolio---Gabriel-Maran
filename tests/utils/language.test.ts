@@ -1,6 +1,7 @@
 import { describe, expect, test } from 'vitest';
 import type { Language } from '../../src/globals/constants.ts';
 import {
+  hasLanguageParam,
   languageFromPath,
   parseLanguage,
   resolveInitialLanguage,
@@ -42,6 +43,19 @@ describe('languageFromPath', () => {
     ['/<script>', null],
   ])('%j devolve %s', (pathname, expected) => {
     expect(languageFromPath(pathname)).toBe(expected);
+  });
+});
+
+describe('hasLanguageParam', () => {
+  test.each<[search: string, expected: boolean]>([
+    ['?lang=en', true],
+    ['?utm=linkedin&lang=pt', true],
+    ['?lang=', true],
+    ['', false],
+    ['?utm=linkedin', false],
+    ['?language=en', false],
+  ])('%j devolve %s', (search, expected) => {
+    expect(hasLanguageParam(search)).toBe(expected);
   });
 });
 

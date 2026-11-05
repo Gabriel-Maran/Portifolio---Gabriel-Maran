@@ -1,12 +1,9 @@
 import { readFileSync } from 'node:fs';
 import type { HtmlTagDescriptor, Plugin } from 'vite';
 
-// Só o que o site lê do vercel.json. As reescritas aparecem para os testes conferirem que não há.
+// Só o que o build lê do vercel.json. Os testes conferem o resto do arquivo pelo objeto inteiro.
 interface VercelConfig {
-  cleanUrls?: boolean;
-  trailingSlash?: boolean;
   headers?: Array<{ source: string; headers: Array<{ key: string; value: string }> }>;
-  rewrites?: unknown[];
 }
 
 const VERCEL_CONFIG = new URL('../vercel.json', import.meta.url);

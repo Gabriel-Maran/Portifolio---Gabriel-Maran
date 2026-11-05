@@ -22,6 +22,10 @@ export function languageFromPath(pathname: string): Language | null {
   return LANGUAGES.find((language) => LANGUAGE_OPTIONS[language].path === path) ?? null;
 }
 
+/** Diz se a query traz o ?lang dos links de antes do /en. */
+export const hasLanguageParam = (search: string) =>
+  new URLSearchParams(search).has(LANGUAGE_QUERY_PARAM);
+
 interface LanguageSources {
   /** O location.pathname, como "/en". */
   pathname: string;
