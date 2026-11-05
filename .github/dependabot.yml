@@ -16,6 +16,12 @@ updates:
     commit-message:
       prefix: chore
       include: scope
+    ignore:
+      # Os tipos acompanham o Node em que o site roda (engines 24.x, no CI e na Vercel). Com os
+      # tipos de um Node mais novo, o código compilaria usando API que não existe em produção.
+      # O major sobe junto com o engines, à mão.
+      - dependency-name: '@types/node'
+        update-types: ['version-update:semver-major']
     groups:
       # Versões menores e correções chegam num PR só; uma versão major continua em PR próprio.
       minor-and-patch:
