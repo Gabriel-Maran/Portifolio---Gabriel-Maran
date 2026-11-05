@@ -92,17 +92,25 @@ export const en: Messages = {
     title: 'Experience',
     subtitle: 'I started by automating processes and now I build full stack systems.',
     current: 'Current',
+    detailsToggle: 'See deliverables and lessons',
+    highlightsTitle: { current: 'What I do', past: 'What I did' },
+    learnedTitle: 'What I learned',
     jobs: [
       {
         ...SHARED.jobs.grupoItalo,
         period: 'Jul 2026 to present',
         role: 'Junior Full Stack Developer',
         organization: 'Grupo Ítalo · Francisco Beltrão, Brazil · Full time',
+        summary:
+          'I build and maintain the company’s internal systems, from the database to the interface: a tools portal, management reports, engineering file management and goal tracking.',
         highlights: [
-          'I build and maintain internal systems: a tools portal, management reports, engineering file management and goal tracking.',
           'I created a feature-based architecture for the reports. Every new report starts with colors, components, error handling and API calls ready.',
           'In file management, large uploads go straight to the cloud without passing through the server, and nothing is deleted for good: there is a recoverable trash (known as *soft delete*).',
           'I standardized back-end error handling, helped define the internal stack and document every project, including the architecture context for AI-assisted development.',
+        ],
+        learned: [
+          'Architecture pays for itself: with colors, components, errors and API calls centralized, a new report no longer starts from scratch.',
+          'Documenting why decisions were made saves rework and helps whoever comes next, AI included.',
         ],
       },
       {
@@ -110,11 +118,17 @@ export const en: Messages = {
         period: 'Jun 2025 to Jun 2026',
         role: 'Automation and development assistant',
         organization: 'LPD Negócios Internacional e Logística · Apprentice',
+        summary:
+          'As an apprentice, I automated processes and built internal apps with Power Automate, Power Apps and SharePoint, for logistics and fruit quality control.',
         highlights: [
           'I built the incoming loads tracker, with atomic pallet reservations, to sell cargo in transit without double bookings.',
           'I improved the fruit quality app, with reports in up to 4 languages, soft delete and connection checks so inspections aren’t lost.',
           'I made people and vehicles independent in the entry and exit control and simplified registration.',
           'I automated the sending of compliance forms and documents.',
+        ],
+        learned: [
+          'Good data modeling fixes what the screen can’t: the one-vehicle-per-person limit came from the data, not the interface.',
+          'Plan for failure before it happens: connections drop and two people book at the same time, so the system has to handle both.',
         ],
       },
     ],

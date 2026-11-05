@@ -1,7 +1,9 @@
 import { BulletList } from '../../components/bullet-list/BulletList.tsx';
+import { Disclosure } from '../../components/disclosure/Disclosure.tsx';
 import { Label } from '../../components/label/Label.tsx';
 import { Section } from '../../components/section/Section.tsx';
 import { TagList } from '../../components/tag-list/TagList.tsx';
+import { VisuallyHidden } from '../../components/visually-hidden/VisuallyHidden.tsx';
 import { SectionGlyph } from '../../cube/SectionGlyph.tsx';
 import { SECTION_IDS } from '../../globals/constants.ts';
 import { useMessages } from '../../i18n/useLanguage.ts';
@@ -9,6 +11,10 @@ import styles from './Experience.module.css';
 import { TimelineEntry } from './TimelineEntry.tsx';
 import { UploadFlow } from './UploadFlow.tsx';
 
+/*
+ * Cada emprego mostra de cara o cargo, o resumo e a stack, que é o que se lê em segundos.
+ * As entregas e os aprendizados ficam num bloco que abre, para a página não ficar longa.
+ */
 export function Experience() {
   const { experience } = useMessages();
 
@@ -28,9 +34,30 @@ export function Experience() {
           >
             <h3 className={styles.role}>{job.role}</h3>
             <p className={styles.organization}>{job.organization}</p>
-            <BulletList items={job.highlights} />
-            {job.showsUploadFlow ? <UploadFlow /> : null}
+            <p className={styles.summary}>{job.summary}</p>
             <TagList className={styles.tags} items={job.tags} />
+            <Disclosure
+              className={styles.details}
+              summary={
+                <>
+                  {experience.detailsToggle}
+                  {/* Com dois empregos, o leitor de tela precisa saber de qual é cada botão. */}
+                  <VisuallyHidden>{` · ${job.role}`}</VisuallyHidden>
+                </>
+              }
+            >
+              <Label as="h4" className={styles.blockTitle}>
+                {job.isCurrent
+                  ? experience.highlightsTitle.current
+                  : experience.highlightsTitle.past}
+              </Label>
+              <BulletList items={job.highlights} />
+              {job.showsUploadFlow ? <UploadFlow /> : null}
+              <Label as="h4" className={styles.blockTitle}>
+                {experience.learnedTitle}
+              </Label>
+              <BulletList items={job.learned} />
+            </Disclosure>
           </TimelineEntry>
         ))}
 

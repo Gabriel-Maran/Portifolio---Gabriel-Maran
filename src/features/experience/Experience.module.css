@@ -52,8 +52,21 @@
   font-weight: 500;
 }
 
+.summary {
+  color: var(--color-text);
+}
+
 .tags {
   margin-top: 6px;
+}
+
+.details {
+  margin-top: 4px;
+}
+
+/* Cada bloco dentro dos detalhes ganha um respiro acima do rótulo. */
+.blockTitle {
+  padding-top: 12px;
 }
 
 .educationTitle {

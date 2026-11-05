@@ -4,8 +4,8 @@ import styles from './Label.module.css';
 
 interface LabelProps {
   children: ReactNode;
-  /** "h3" quando o rótulo abre um bloco, para a hierarquia de títulos não pular nível. */
-  as?: 'p' | 'span' | 'h3';
+  /** "h3" ou "h4" quando o rótulo abre um bloco, para a hierarquia de títulos não pular nível. */
+  as?: 'p' | 'span' | 'h3' | 'h4';
   className?: string;
 }
 

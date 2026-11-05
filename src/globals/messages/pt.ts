@@ -94,17 +94,25 @@ export const pt = {
     title: 'Experiência',
     subtitle: 'Comecei automatizando processos e hoje construo sistemas full stack.',
     current: 'Atual',
+    detailsToggle: 'Ver entregas e aprendizados',
+    highlightsTitle: { current: 'O que faço', past: 'O que fiz' },
+    learnedTitle: 'O que aprendi',
     jobs: [
       {
         ...SHARED.jobs.grupoItalo,
         period: 'Jul 2026 até hoje',
         role: 'Desenvolvedor Full Stack Júnior',
         organization: 'Grupo Ítalo · Francisco Beltrão, PR · Tempo integral',
+        summary:
+          'Desenvolvo e mantenho, do banco de dados à interface, os sistemas internos da empresa: portal de ferramentas, relatórios gerenciais, gestão de arquivos da engenharia e acompanhamento de metas.',
         highlights: [
-          'Desenvolvo e mantenho sistemas internos: portal de ferramentas, relatórios gerenciais, gestão de arquivos da engenharia e acompanhamento de metas.',
           'Criei uma arquitetura por features para os relatórios. Cada relatório novo já nasce com cores, componentes, tratamento de erros e chamadas de API prontos.',
           'Na gestão de arquivos, envios grandes vão direto para a nuvem, sem passar pelo servidor, e nada é apagado de vez: há lixeira com recuperação (o chamado *soft delete*).',
           'Padronizei o tratamento de erros no back-end, ajudei a definir a stack interna e documento cada projeto, inclusive o contexto de arquitetura para desenvolvimento com IA.',
+        ],
+        learned: [
+          'Arquitetura se paga: com cores, componentes, erros e chamadas de API centralizados, um relatório novo deixou de começar do zero.',
+          'Documentar o porquê das decisões poupa retrabalho e ajuda quem chega depois, inclusive a IA.',
         ],
       },
       {
@@ -112,11 +120,17 @@ export const pt = {
         period: 'Jun 2025 a jun 2026',
         role: 'Assistente de automação e desenvolvimento',
         organization: 'LPD Negócios Internacional e Logística · Aprendiz',
+        summary:
+          'Como aprendiz, automatizei processos e criei apps internos com Power Automate, Power Apps e SharePoint, para a logística e o controle de qualidade de frutas.',
         highlights: [
           'Criei o controle de cargas a caminho, com reserva de pallets por validação atômica, para vender carga em trânsito sem reserva dupla.',
           'Melhorei o app de qualidade de frutas, com relatórios em até 4 idiomas, soft delete e controle de conexão para não perder vistorias.',
           'Tornei pessoa e veículo independentes no controle de entrada e saída e facilitei o cadastro.',
           'Automatizei o envio de formulários e documentos de conformidade.',
+        ],
+        learned: [
+          'Modelar bem os dados resolve o que a tela não resolve: o limite de um veículo por pessoa vinha do cadastro, não da interface.',
+          'Pensar na falha antes dela: a conexão cai e duas pessoas reservam ao mesmo tempo, então o sistema precisa aguentar as duas coisas.',
         ],
       },
     ],
