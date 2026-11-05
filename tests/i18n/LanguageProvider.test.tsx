@@ -44,11 +44,17 @@ describe('idioma da visita', () => {
     expect(document.title).toBe(messages.pt.meta.title);
   });
 
-  test('?lang=en abre em inglês', () => {
-    renderPage('/?lang=en');
+  test('/en abre em inglês', () => {
+    renderPage('/en');
 
     expect(current()).toBe(`en: ${messages.en.hero.seeProjects}`);
     expect(document.documentElement.lang).toBe('en');
+  });
+
+  test('links antigos com ?lang=en ainda abrem em inglês', () => {
+    renderPage('/?lang=en');
+
+    expect(current()).toMatch(/^en:/);
   });
 
   test('usa a escolha salva na visita anterior', () => {
@@ -61,7 +67,7 @@ describe('idioma da visita', () => {
 
   // O build gera o HTML sem navegador: o idioma passado direto não depende da URL nem do storage.
   test('o idioma inicial passado direto vence a URL e a escolha salva', () => {
-    window.history.replaceState(null, '', '/?lang=en');
+    window.history.replaceState(null, '', '/en');
     window.localStorage.setItem(LANGUAGE_STORAGE_KEY, 'en');
 
     render(
@@ -76,7 +82,7 @@ describe('idioma da visita', () => {
   test('a URL vence a escolha salva, sem sobrescrever a escolha', () => {
     window.localStorage.setItem(LANGUAGE_STORAGE_KEY, 'pt');
 
-    renderPage('/?lang=en');
+    renderPage('/en');
 
     expect(current()).toMatch(/^en:/);
     expect(window.localStorage.getItem(LANGUAGE_STORAGE_KEY)).toBe('pt');
@@ -97,20 +103,30 @@ describe('troca de idioma', () => {
 
     expect(current()).toBe(`en: ${messages.en.hero.seeProjects}`);
     expect(window.localStorage.getItem(LANGUAGE_STORAGE_KEY)).toBe('en');
-    expect(window.location.search).toBe('?lang=en');
+    expect(window.location.pathname).toBe('/en');
     expect(document.documentElement.lang).toBe('en');
     expect(document.title).toBe(messages.en.meta.title);
     expect(description.content).toBe(messages.en.meta.description);
   });
 
-  test('voltar ao português tira o ?lang e mantém a âncora e os outros parâmetros', () => {
-    renderPage('/?utm=linkedin&lang=en#projetos');
+  test('voltar ao português leva à raiz e mantém a âncora e os outros parâmetros', () => {
+    renderPage('/en?utm=linkedin#projetos');
 
     clickLanguage('PT Português');
 
+    expect(window.location.pathname).toBe('/');
     expect(window.location.search).toBe('?utm=linkedin');
     expect(window.location.hash).toBe('#projetos');
     expect(window.localStorage.getItem(LANGUAGE_STORAGE_KEY)).toBe('pt');
+  });
+
+  test('a troca tira o ?lang de um link antigo', () => {
+    renderPage('/?utm=linkedin&lang=en');
+
+    clickLanguage('EN English');
+
+    expect(window.location.pathname).toBe('/en');
+    expect(window.location.search).toBe('?utm=linkedin');
   });
 
   test('com o armazenamento bloqueado, o idioma ainda troca', () => {
@@ -125,7 +141,7 @@ describe('troca de idioma', () => {
     clickLanguage('EN English');
 
     expect(current()).toMatch(/^en:/);
-    expect(window.location.search).toBe('?lang=en');
+    expect(window.location.pathname).toBe('/en');
   });
 });
 

@@ -20,7 +20,7 @@ const detailsIn = (entry: HTMLElement) => {
 
 describe.each(LANGUAGES)('experiência em %s', (language) => {
   const { experience } = messages[language];
-  const url = language === 'en' ? '/?lang=en' : '/';
+  const url = language === 'en' ? '/en' : '/';
 
   test('cada emprego mostra o resumo fora dos detalhes, que começam fechados', () => {
     renderWithProviders(<Experience />, { url });

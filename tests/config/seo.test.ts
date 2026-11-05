@@ -29,7 +29,7 @@ describe('idiomas', () => {
   test('uma URL por idioma, mais o x-default em português', () => {
     expect(languageAlternates(SITE)).toEqual([
       { hreflang: 'pt-BR', href: `${SITE}/` },
-      { hreflang: 'en', href: `${SITE}/?lang=en` },
+      { hreflang: 'en', href: `${SITE}/en` },
       { hreflang: 'x-default', href: `${SITE}/` },
     ]);
   });
@@ -45,7 +45,8 @@ describe('robots.txt e sitemap.xml', () => {
 
     expect(xml.startsWith('<?xml version="1.0" encoding="UTF-8"?>')).toBe(true);
     expect(xml.match(/<loc>/g)).toHaveLength(2);
-    expect(xml).toContain(`<loc>${SITE}/?lang=en</loc>`);
+    expect(xml).toContain(`<loc>${SITE}/</loc>`);
+    expect(xml).toContain(`<loc>${SITE}/en</loc>`);
     expect(xml.match(/hreflang="x-default"/g)).toHaveLength(2);
   });
 

@@ -14,7 +14,7 @@ const headingLevel = (heading: Element) => Number(heading.tagName.slice(1));
 
 describe.each(LANGUAGES)('página inicial em %s', (language) => {
   const text = messages[language];
-  const url = language === 'en' ? '/?lang=en' : '/';
+  const url = language === 'en' ? '/en' : '/';
 
   test('tem um h1 com o nome e um h2 por seção, na ordem da navegação', () => {
     renderHome(url);

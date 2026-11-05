@@ -51,13 +51,16 @@ export const DEFAULT_LANGUAGE: Language = 'pt';
 
 // O nome de cada idioma fica na própria língua, então não muda com o idioma da página.
 // `tag` vai no atributo lang e no hreflang; `ogLocale` é o formato do Open Graph.
+// `path` é o endereço da página do idioma: o padrão fica na raiz. É pelo caminho, e não pela query,
+// porque o cache da Vercel ignora a query e serviria a mesma página para os dois idiomas.
 export const LANGUAGE_OPTIONS = {
-  pt: { short: 'PT', name: 'Português', tag: 'pt-BR', ogLocale: 'pt_BR' },
-  en: { short: 'EN', name: 'English', tag: 'en', ogLocale: 'en_US' },
+  pt: { short: 'PT', name: 'Português', tag: 'pt-BR', ogLocale: 'pt_BR', path: '/' },
+  en: { short: 'EN', name: 'English', tag: 'en', ogLocale: 'en_US', path: '/en' },
 } as const satisfies Record<
   Language,
-  { short: string; name: string; tag: string; ogLocale: string }
+  { short: string; name: string; tag: string; ogLocale: string; path: string }
 >;
 
+// Os links de antes do /en usavam ?lang=en. O navegador ainda lê esse parâmetro, para eles não quebrarem.
 export const LANGUAGE_QUERY_PARAM = 'lang';
 export const LANGUAGE_STORAGE_KEY = 'language';

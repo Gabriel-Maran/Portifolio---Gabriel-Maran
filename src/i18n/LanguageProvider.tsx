@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useState, type ReactNode } from 'react';
 import { LANGUAGE_STORAGE_KEY, type Language } from '../globals/constants.ts';
 import { messages } from '../globals/messages/index.ts';
-import { withLanguageParam } from '../utils/language.ts';
+import { withLanguagePath } from '../utils/language.ts';
 import { getLocalStorage, writeStorage } from '../utils/storage.ts';
 import { applyDocumentLanguage } from './documentLanguage.ts';
 import { readInitialLanguage } from './initialLanguage.ts';
@@ -31,7 +31,7 @@ export function LanguageProvider({ initialLanguage, children }: LanguageProvider
     window.history.replaceState(
       window.history.state,
       '',
-      withLanguageParam(window.location.href, next),
+      withLanguagePath(window.location.href, next),
     );
   }, []);
 
