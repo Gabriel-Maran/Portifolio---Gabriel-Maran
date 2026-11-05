@@ -1,0 +1,22 @@
+.card {
+  gap: 12px;
+}
+
+/* O estado fica no rodapé do card, alinhando os cards da grade pela base. */
+.footer {
+  display: grid;
+  gap: 2px;
+  margin-top: auto;
+  padding-top: 12px;
+  border-top: 1px solid var(--color-border);
+}
+
+.status {
+  color: var(--color-text);
+  font-weight: 500;
+}
+
+.codeNote {
+  color: var(--color-text-muted);
+  font: 400 13.5px / 1.45 var(--font-mono);
+}

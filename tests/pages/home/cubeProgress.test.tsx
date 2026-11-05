@@ -118,4 +118,17 @@ describe('cubo da página', () => {
     expect(hasText(tracker.progress(0, TOTAL))).toBe(true);
     expect(solvedGlyphs()).toBe(0);
   });
+
+  test('"Embaralhar" já conta a seção que está no meio da tela', () => {
+    renderHome();
+    SectionObserver.enter(SECTION_IDS.whatIDo);
+    fireEvent.click(screen.getByRole('button', { name: cube.solve }));
+
+    fireEvent.click(screen.getByRole('button', { name: cube.scramble }));
+
+    expect(hasText(cube.movesLeft(TOTAL - 1))).toBe(true);
+    expect(hasText(tracker.progress(1, TOTAL))).toBe(true);
+    // A de "O que eu faço" no título e a mesma face na fileira do fechamento.
+    expect(solvedGlyphs()).toBe(2);
+  });
 });

@@ -4,7 +4,8 @@ import { useEffect, useEffectEvent, useState } from 'react';
 const MIDDLE_BAND: IntersectionObserverInit = { rootMargin: '-35% 0px -35% 0px' };
 
 /**
- * Id da seção que está no meio da tela, ou null antes de a pessoa chegar a alguma.
+ * Id da seção que está no meio da tela, ou null quando nenhuma está, como na abertura.
+ * Se duas dividem a faixa, vale a última que entrou.
  * `onEnter` é avisado a cada seção que entra na faixa, como na visita que gira o cubo.
  * Os ids precisam ser estáveis (uma constante), porque trocar a lista recria o observer.
  */
@@ -13,19 +14,25 @@ export function useActiveSection(
   onEnter?: (id: string) => void,
 ): string | null {
   const [activeId, setActiveId] = useState<string | null>(null);
-  const handleEnter = useEffectEvent((id: string) => {
-    setActiveId(id);
-    onEnter?.(id);
-  });
+  const notifyEnter = useEffectEvent((id: string) => onEnter?.(id));
 
   useEffect(() => {
     // Sem IntersectionObserver, a navegação funciona, só não marca a seção atual.
     if (!('IntersectionObserver' in window)) return;
 
+    // Seções que estão na faixa agora, na ordem em que entraram.
+    const inBand = new Set<string>();
+
     const observer = new IntersectionObserver((entries) => {
-      for (const entry of entries) {
-        if (entry.isIntersecting) handleEnter(entry.target.id);
+      for (const { target, isIntersecting } of entries) {
+        // Sai e entra de novo no Set para a seção que acabou de chegar ficar por último.
+        inBand.delete(target.id);
+        if (isIntersecting) {
+          inBand.add(target.id);
+          notifyEnter(target.id);
+        }
       }
+      setActiveId([...inBand].at(-1) ?? null);
     }, MIDDLE_BAND);
 
     for (const id of ids) {

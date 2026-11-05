@@ -1,3 +1,4 @@
+import { useCallback, useMemo } from 'react';
 import { SkipLink } from '../../components/skip-link/SkipLink.tsx';
 import { CubeProvider } from '../../cube/CubeProvider.tsx';
 import { useCubeState } from '../../cube/useCubeState.ts';
@@ -20,16 +21,32 @@ import { useActiveSection } from './useActiveSection.ts';
 export function HomePage() {
   const { navigation } = useMessages();
   const cube = useCubeState(HOME_SOLUTION);
-  const { visit } = cube;
+  const { visit, scramble } = cube;
+
+  const visitSection = useCallback(
+    (id: string) => {
+      const face = faceOfSectionId(id);
+      if (face) visit(face);
+    },
+    [visit],
+  );
 
   // Cada seção que chega ao meio da tela conta como visitada e desfaz um movimento do cubo.
-  const activeSection = useActiveSection(HOME_SECTION_IDS, (id) => {
-    const face = faceOfSectionId(id);
-    if (face) visit(face);
-  });
+  const activeSection = useActiveSection(HOME_SECTION_IDS, visitSection);
+
+  // A rodada nova já conta a seção que está no meio da tela, sem esperar outra rolagem.
+  const scrambleAndRecount = useCallback(() => {
+    scramble();
+    if (activeSection) visitSection(activeSection);
+  }, [scramble, activeSection, visitSection]);
+
+  const pageCube = useMemo(
+    () => ({ ...cube, scramble: scrambleAndRecount }),
+    [cube, scrambleAndRecount],
+  );
 
   return (
-    <CubeProvider state={cube} faceBySection={FACE_BY_SECTION}>
+    <CubeProvider state={pageCube} faceBySection={FACE_BY_SECTION}>
       <SkipLink href={`#${MAIN_CONTENT_ID}`}>{navigation.skipToContent}</SkipLink>
       <Navigation sections={HOME_SECTION_KEYS} activeSection={activeSection} />
       <main id={MAIN_CONTENT_ID}>

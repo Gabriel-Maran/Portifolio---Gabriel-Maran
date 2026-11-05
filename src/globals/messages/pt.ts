@@ -49,40 +49,44 @@ export const pt = {
     role: 'Desenvolvedor Full Stack Júnior *no Grupo Ítalo*',
     lead: 'Antes de escrever código, entendo o problema e planejo a solução. Depois construo de ponta a ponta: sistemas web, APIs, dashboards e apps.',
     seeProjects: 'Ver projetos',
-    facts: ['Francisco Beltrão, PR', 'Inglês intermediário', 'Sem busca ativa, aberto a conversar'],
+    facts: ['Francisco Beltrão, PR', 'Inglês intermediário', 'Formado em ADS pela Unipar'],
   },
 
   copyEmail: {
     action: 'Copiar e-mail',
     copied: 'E-mail copiado',
-    selected: 'Selecionado, use Ctrl+C',
+    selected: 'Não foi possível copiar. O e-mail está selecionado no campo, pronto para copiar.',
   },
 
   whatIDo: {
     title: 'O que eu faço',
-    subtitle: 'Quatro frentes, cada uma com um exemplo real.',
+    subtitle: 'Do banco de dados à interface, com um exemplo real em cada frente.',
     items: [
       {
-        title: 'Sistemas web',
+        title: 'Sistemas web e SaaS',
         description:
-          'Sistemas completos, com login, permissões, painéis e banco de dados. A mesma base serve para um SaaS.',
-        example: 'Exemplo: os sistemas internos que desenvolvo e mantenho',
+          'Sistemas com login, papéis e permissões, regras de negócio no servidor e painéis para quem usa no dia a dia.',
+        example: 'Exemplos: os sistemas internos que mantenho no trabalho e o Controle de Gastos',
       },
       {
-        title: 'APIs e integrações',
-        description: 'APIs REST que conectam sistemas, bancos de dados e serviços externos.',
-        example: 'Exemplo: o back-end do Rinha de Ratos',
+        title: 'APIs e back-end',
+        description:
+          'APIs REST que validam toda entrada, checam a permissão no servidor, padronizam os erros e vêm com testes automatizados.',
+        example:
+          'Exemplos: o Controle de Gastos, com mais de 300 testes, e o Rinha de Ratos, com 48 endpoints',
       },
       {
         title: 'Dashboards e relatórios',
         description:
-          'Gráficos, tabelas e comparativos por período e por unidade, para decidir com dados.',
-        example: 'Exemplo: relatórios gerenciais no trabalho',
+          'Transformo dados espalhados em gráficos, tabelas e comparativos (mês a mês, ano a ano, por unidade) para quem precisa decidir.',
+        example: 'Exemplos: os relatórios gerenciais do trabalho e os seis do PetShop Manager',
       },
       {
-        title: 'Sites, landing pages e apps',
-        description: 'Páginas rápidas e responsivas, e apps com React Native e Expo.',
-        example: 'Exemplos: este site e um [app acadêmico que consome APIs](academicApp)',
+        title: 'Apps e sites',
+        description:
+          'Apps com React Native e Expo, inclusive para uso sem internet, e sites rápidos, acessíveis e em dois idiomas.',
+        example:
+          'Exemplos: o PetShop Manager, este site e um [app acadêmico que consome APIs](academicApp)',
       },
     ],
   },
@@ -152,7 +156,7 @@ export const pt = {
 
   projects: {
     title: 'Projetos',
-    subtitle: 'Código público para você conferir.',
+    subtitle: 'Um projeto entregue, com código aberto, e os que estou construindo agora.',
     rinha: {
       ...SHARED.projects.rinha,
       category: 'Projeto acadêmico',
@@ -172,29 +176,80 @@ export const pt = {
         'Histórico de uma batalha no jogo, com o dano causado em cada ataque e a vida dos dois ratos na rodada 6.',
       imageCaption: 'Histórico por rodada, gerado pelo motor de batalha que construí',
     },
+    inProgressTitle: 'Em construção',
+    privateCode: 'Código privado por enquanto',
+    inProgress: [
+      {
+        ...SHARED.projects.inProgress.petShop,
+        category: 'App mobile · Em equipe',
+        description:
+          'App para pet shops organizarem donos, pets e agenda sem depender de internet. Os planos remarcam o próximo atendimento sozinhos.',
+        highlights: [
+          'Banco no próprio celular, com 8 triggers no SQLite para a remarcação automática e para ativar ou desativar dono e pets em cascata.',
+          'Seis relatórios, como dias e horários mais atendidos e pets há mais tempo sem visita, com o telefone do dono.',
+          'Backup do banco em arquivo, exportado e importado pelo próprio celular.',
+        ],
+        status: 'Próximo passo: reorganizar a arquitetura em pull requests públicos.',
+      },
+      {
+        ...SHARED.projects.inProgress.expenses,
+        category: 'API · Projeto pessoal',
+        description:
+          'API para gastos divididos entre casal, amigos de viagem ou república: quem pagou, de quem é cada parte e quem deve para quem.',
+        highlights: [
+          'Divisão igual, por porcentagem ou por valor exato, com parcelamento e acertos com transferências sugeridas.',
+          'Orçamentos por pessoa e por categoria, em períodos semanais, mensais ou anuais. O que estoura num período sai do seguinte.',
+          'Papéis com autorização em camadas, histórico de alterações e mais de 300 testes automatizados.',
+        ],
+        status: 'Back-end em 6 de 7 partes. O front-end vem depois.',
+      },
+      {
+        ...SHARED.projects.inProgress.tickets,
+        category: 'API · Projeto pessoal',
+        description:
+          'API para criar eventos presenciais, híbridos ou online e vender ingressos por lotes, com um ingresso e um QR code por participante.',
+        highlights: [
+          'O banco nunca vende além do lote: um trigger reserva a vaga de forma atômica e recusa o ingresso quando o lote esgota.',
+          'Pagamento confirmado por webhook, com o segredo comparado em tempo constante.',
+          'Login com token de acesso e de renovação. O banco guarda só o hash da senha e do token, e o login não revela se o e-mail existe.',
+        ],
+        status: 'Em desenvolvimento: a API vem primeiro.',
+      },
+      {
+        ...SHARED.projects.inProgress.miniReact,
+        category: 'Estudo · Em andamento',
+        description:
+          'Um React escrito do zero, em JavaScript puro e sem dependências, para entender por dentro a ferramenta que uso todo dia.',
+        highlights: [
+          'Prontos: `createElement`, Virtual DOM, `render` e componentes de função.',
+          'Próximos: estado, reconciliação, listas com `key`, efeitos e Fiber.',
+          'Cada etapa fecha com perguntas que preciso responder sem consultar nada.',
+        ],
+        status: 'Etapa 4 de 10.',
+      },
+    ],
   },
 
   method: {
     title: 'Como eu resolvo problemas',
-    subtitle:
-      'Encontrar e planejar a solução é minha principal capacidade. Um caso real do começo ao fim: o motor de batalha do Rinha de Ratos.',
+    subtitle: 'Um caso real, do problema à revisão: o motor de batalha do Rinha de Ratos.',
     stepLabel: (step: number) => `Passo ${step}`,
     steps: [
       {
-        title: 'Entendo o problema',
-        text: 'O jogo dependia de um motor de batalha com ataques, poderes por sorte e atributos, e o prazo de 38 dias não comportava batalhas ao vivo por WebSockets.',
+        title: 'Entendo o problema e os limites',
+        text: 'O jogo precisava de batalhas com ataques por rodada, poderes que dependem de sorte e atributos, e habilidades com efeitos próprios. Os limites: 38 dias, equipe de 4 e nenhum tempo para aprender WebSockets.',
       },
       {
-        title: 'Planejo a solução',
-        text: 'Planejei as funcionalidades e organizei o back-end em camadas: controllers, services e repositories. A luta seria simulada inteira no servidor, de uma vez.',
+        title: 'Escolho o caminho',
+        text: 'Troquei a luta ao vivo por uma simulação completa no servidor: a batalha roda de uma vez, e a tela mostra o histórico rodada a rodada. Perdi o tempo real e ganhei um motor que cabia no prazo.',
       },
       {
         title: 'Construo',
-        text: 'O motor guarda vida e efeitos na memória e grava o histórico de cada rodada. As habilidades são escritas como texto, como `+18%PASSEU`, e lidas por um parser.',
+        text: 'Organizei o back-end em camadas: controllers, services e repositories. O motor guarda vida e efeitos na memória e grava cada rodada no histórico. As habilidades são texto, como `+18%PASSEU`, lido por um parser.',
       },
       {
         title: 'Entrego e reviso',
-        text: 'O jogo foi entregue com batalhas automáticas, ranking e relatórios em PDF. Revendo hoje, eu faria diferente: senhas com hash, autenticação de verdade, middlewares de tratamento de erros e camadas mais bem separadas.',
+        text: 'O jogo foi entregue com batalhas automáticas, ranking e relatórios em PDF. Revendo hoje, eu mudaria: senhas com hash, autenticação de verdade, middlewares de erro e de validação e camadas mais bem divididas. É o que já aplico no Controle de Gastos.',
       },
     ],
   },
@@ -213,7 +268,7 @@ export const pt = {
   contact: {
     title: 'Todo problema tem um algoritmo.',
     availability:
-      'Hoje sou Desenvolvedor Full Stack Júnior no Grupo Ítalo. Não estou em busca ativa, mas estou aberto a conversar: presencial ou híbrido em Francisco Beltrão, ou remoto de qualquer lugar.',
+      'Gosto de conversar sobre problemas difíceis, arquitetura e código. Se quiser trocar uma ideia, me chame.',
     emailLabel: 'E-mail',
     socialLabels: {
       linkedin: 'Conecte',

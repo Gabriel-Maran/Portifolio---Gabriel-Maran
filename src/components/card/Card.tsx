@@ -21,8 +21,14 @@ export function LinkCard({ href, children, className }: CardProps & { href: stri
   );
 }
 
-export function CardTitle({ children }: { children: ReactNode }) {
-  return <h3 className={styles.title}>{children}</h3>;
+interface CardTitleProps {
+  children: ReactNode;
+  /** "h4" quando o card fica dentro de um bloco que já tem título h3. */
+  as?: 'h3' | 'h4';
+}
+
+export function CardTitle({ children, as: Heading = 'h3' }: CardTitleProps) {
+  return <Heading className={styles.title}>{children}</Heading>;
 }
 
 export function CardText({ children }: { children: ReactNode }) {

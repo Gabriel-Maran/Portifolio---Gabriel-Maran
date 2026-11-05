@@ -1,3 +1,4 @@
+import { BulletList } from '../../components/bullet-list/BulletList.tsx';
 import { Label } from '../../components/label/Label.tsx';
 import { Section } from '../../components/section/Section.tsx';
 import { TagList } from '../../components/tag-list/TagList.tsx';
@@ -27,11 +28,7 @@ export function Experience() {
           >
             <h3 className={styles.role}>{job.role}</h3>
             <p className={styles.organization}>{job.organization}</p>
-            <ul className={styles.highlights}>
-              {job.highlights.map((highlight) => (
-                <li key={highlight}>{highlight}</li>
-              ))}
-            </ul>
+            <BulletList items={job.highlights} />
             {job.showsUploadFlow ? <UploadFlow /> : null}
             <TagList className={styles.tags} items={job.tags} />
           </TimelineEntry>

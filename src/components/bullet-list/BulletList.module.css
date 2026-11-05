@@ -1,0 +1,21 @@
+.list {
+  display: grid;
+  gap: 8px;
+  color: var(--color-text-soft);
+}
+
+.item {
+  position: relative;
+  padding-left: 18px;
+}
+
+.item::before {
+  content: '';
+  position: absolute;
+  top: 0.62em;
+  left: 0;
+  width: 7px;
+  height: 7px;
+  border-radius: 2px;
+  background: var(--color-text-muted);
+}

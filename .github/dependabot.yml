@@ -1,0 +1,23 @@
+# Atualizações semanais das dependências e das actions do CI, sempre por pull request.
+# A espera de 7 dias é a mesma do min-release-age do .npmrc: uma versão recém-publicada ainda
+# pode ser retirada ou estar comprometida. Os alertas de segurança não esperam.
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+    cooldown:
+      default-days: 7
+    groups:
+      # Versões menores e correções chegam num PR só; uma versão major continua em PR próprio.
+      minor-and-patch:
+        update-types: [minor, patch]
+
+  # As actions estão fixadas por SHA no ci.yml; o Dependabot troca o SHA e o comentário da versão.
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+    cooldown:
+      default-days: 7

@@ -21,6 +21,25 @@ export const SHARED = {
       tags: ['Kotlin', 'Spring Boot', 'PostgreSQL', 'PDFBox'],
       stats: { endpoints: 48, days: 38, people: 4 },
     },
+    // Em andamento e com código ainda privado: entram sem link, cada um com o estado atual.
+    inProgress: {
+      petShop: {
+        name: 'PetShop Manager',
+        tags: ['React Native', 'Expo', 'TypeScript', 'SQLite'],
+      },
+      expenses: {
+        name: 'Controle de Gastos',
+        tags: ['Node.js', 'Express', 'TypeScript', 'Zod', 'Prisma', 'PostgreSQL'],
+      },
+      tickets: {
+        name: 'Plataforma de Ingressos',
+        tags: ['Node.js', 'Express', 'TypeScript', 'PostgreSQL', 'JWT'],
+      },
+      miniReact: {
+        name: 'Mini React',
+        tags: ['JavaScript', 'Virtual DOM'],
+      },
+    },
   },
   stack: {
     frontend: {

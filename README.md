@@ -74,6 +74,8 @@ de import.
   idiomas: ordem das seções, títulos sem salto de nível, âncoras que existem, links externos seguros
   e imagens com texto alternativo.
 - **CI:** o `npm run check` roda a cada push e pull request, com as actions fixadas por SHA.
+- **Dependências:** o Dependabot abre PRs semanais para npm e actions, só com versões publicadas
+  há mais de 7 dias.
 - **Ambiente:** a versão do Node vem só do `engines` do `package.json`, e o `.npmrc` desliga
   scripts de instalação no CI e na Vercel.
 

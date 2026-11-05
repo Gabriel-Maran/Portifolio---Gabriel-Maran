@@ -81,12 +81,44 @@ test('marca a seção que entra no meio da tela', () => {
   expect(active()).toBe('primeira');
 });
 
-test('uma seção que sai da faixa não muda a seção ativa', () => {
+test('uma seção que sai da faixa sem ser a ativa não muda a seção ativa', () => {
   vi.stubGlobal('IntersectionObserver', FakeIntersectionObserver);
   render(<Page />);
 
   FakeIntersectionObserver.latest?.enter('primeira');
   FakeIntersectionObserver.latest?.enter('segunda', false);
+
+  expect(active()).toBe('primeira');
+});
+
+test('ao voltar para a abertura, nenhuma seção fica marcada', () => {
+  vi.stubGlobal('IntersectionObserver', FakeIntersectionObserver);
+  render(<Page />);
+
+  FakeIntersectionObserver.latest?.enter('primeira');
+  FakeIntersectionObserver.latest?.enter('primeira', false);
+
+  expect(active()).toBe('nenhuma');
+});
+
+test('se a ativa sai e outra continua na faixa, a outra passa a ser a ativa', () => {
+  vi.stubGlobal('IntersectionObserver', FakeIntersectionObserver);
+  render(<Page />);
+
+  FakeIntersectionObserver.latest?.enter('primeira');
+  FakeIntersectionObserver.latest?.enter('segunda');
+  FakeIntersectionObserver.latest?.enter('segunda', false);
+
+  expect(active()).toBe('primeira');
+});
+
+test('a seção que entra de novo volta a ser a ativa, mesmo sem ter saído antes', () => {
+  vi.stubGlobal('IntersectionObserver', FakeIntersectionObserver);
+  render(<Page />);
+
+  FakeIntersectionObserver.latest?.enter('primeira');
+  FakeIntersectionObserver.latest?.enter('segunda');
+  FakeIntersectionObserver.latest?.enter('primeira');
 
   expect(active()).toBe('primeira');
 });
