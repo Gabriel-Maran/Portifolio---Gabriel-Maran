@@ -2,8 +2,22 @@
   padding-block: 12px 0;
 }
 
+/* Em tela larga, o cubo sobe para o topo; no celular, fica depois dos botões. */
+.cubeBlock {
+  display: grid;
+  justify-items: center;
+  order: -1;
+}
+
 .cube {
   margin-bottom: -6px;
+}
+
+@media (max-width: 860px) {
+  .cubeBlock {
+    order: 0;
+    margin-top: 20px;
+  }
 }
 
 /* A instrução fica colada ao cubo, para ficar claro que ele responde ao arraste. */

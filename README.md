@@ -5,8 +5,8 @@ como resolvo problemas, stack e contato.
 
 **No ar:** https://gabriel-maran.vercel.app · em inglês: https://gabriel-maran.vercel.app/?lang=en
 
-A página tem um cubo mágico que abre embaralhado. Cada seção lida desfaz um movimento, e ele chega
-resolvido ao fechamento. A solução `U L R F B D` tem um movimento por seção, na ordem da página.
+A página tem um cubo mágico que abre embaralhado. Cada seção lida desfaz um movimento, e as seis
+faces chegam resolvidas ao fechamento. A solução `U L R F B D` tem um movimento por seção, na ordem da página.
 
 ## Stack
 
@@ -56,7 +56,7 @@ de import.
   mesmas chaves do português. Destaques usam uma marcação mínima (`**forte**`, `` `código` ``,
   `[link](chave)`) lida por um parser, nunca por `innerHTML`. O link aponta para uma chave de
   constante, então um texto não consegue criar link para uma URL qualquer.
-- **Cubo sincronizado.** Quatro cubos 3D giram juntos: um maestro sem React põe os movimentos em
+- **Cubo sincronizado.** O cubo da abertura e o do rastreador giram juntos: um maestro sem React põe os movimentos em
   fila e espera todos terminarem. A animação roda direto no DOM, sem render do React a cada quadro.
   Fora da tela ou com movimento reduzido, o giro é instantâneo.
 - **Erros num lugar só.** Todo erro vira um `AppError` com código, e um único módulo escreve no

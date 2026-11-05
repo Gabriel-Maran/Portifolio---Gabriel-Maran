@@ -41,7 +41,7 @@ export const en: Messages = {
 
   hero: {
     role: 'Junior Full Stack Developer *at Grupo Ítalo*',
-    lead: 'Before writing code, I understand the problem and plan the solution. Then I build it end to end: web systems, APIs, dashboards and apps.',
+    lead: 'I build and maintain management reports, goal tracking and file management, from the database to the interface. Before the code, I understand the problem and plan the solution.',
     seeProjects: 'See projects',
     facts: [
       'Francisco Beltrão, Brazil',
@@ -80,9 +80,9 @@ export const en: Messages = {
         example: 'Examples: the management reports at work and the six in PetShop Manager',
       },
       {
-        title: 'Apps and websites',
+        title: 'Apps and landing pages',
         description:
-          'React Native and Expo apps, including ones that work offline, and fast, accessible, bilingual websites.',
+          'React Native and Expo apps, including ones that work offline, and fast, accessible, bilingual landing pages.',
         example: 'Example: [PetShop Manager](petShopCode)',
       },
     ],

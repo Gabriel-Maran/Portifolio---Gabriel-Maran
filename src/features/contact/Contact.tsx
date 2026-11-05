@@ -4,7 +4,6 @@ import { CopyEmailButton } from '../../components/copy-email-button/CopyEmailBut
 import { Grid } from '../../components/grid/Grid.tsx';
 import { Label } from '../../components/label/Label.tsx';
 import { Section } from '../../components/section/Section.tsx';
-import { CubeScene } from '../../cube/CubeScene.tsx';
 import { FaceGlyph } from '../../cube/FaceGlyph.tsx';
 import { GLYPH_CELLS } from '../../cube/glyph.ts';
 import { useCube } from '../../cube/useCube.ts';
@@ -18,14 +17,16 @@ import { useMessages } from '../../i18n/useLanguage.ts';
 import { cx } from '../../utils/classNames.ts';
 import styles from './Contact.module.css';
 
-/** O fechamento: o cubo chega resolvido aqui, com as seis faces e a contagem de movimentos. */
+/**
+ * O fechamento: as seis faces chegam resolvidas aqui, com a contagem de movimentos.
+ * O cubo 3D fica só na abertura e no rastreador, para não virar papel de parede.
+ */
 function Finale() {
   const { cube } = useMessages();
   const { solution, visited, movesDone, isSolved } = useCube();
 
   return (
     <div className={styles.finale}>
-      <CubeScene draggable />
       <div className={styles.solvedRow}>
         {solution.map((face) => (
           <FaceGlyph key={face} face={face} solvedCells={visited.has(face) ? GLYPH_CELLS : 0} />

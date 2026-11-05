@@ -17,16 +17,6 @@ export function Hero() {
   return (
     <section className={styles.hero} aria-labelledby={titleId}>
       <Container className={styles.inner}>
-        <CubeScene className={styles.cube} draggable />
-        <div className={styles.cubeNote}>
-          <span>{cube.hint}</span>
-          <Button variant="text" onClick={scramble}>
-            {cube.scramble}
-          </Button>
-          <Button variant="text" onClick={solveAll}>
-            {cube.solve}
-          </Button>
-        </div>
         <h1 id={titleId} className={styles.name}>
           {OWNER_NAME}
         </h1>
@@ -50,6 +40,22 @@ export function Hero() {
             <li key={fact}>{fact}</li>
           ))}
         </ul>
+        {/*
+         * O cubo vem por último no HTML: no celular e no leitor de tela, quem é a pessoa aparece
+         * primeiro. Em tela larga, o CSS o leva de volta para o topo, como assinatura da página.
+         */}
+        <div className={styles.cubeBlock}>
+          <CubeScene className={styles.cube} draggable />
+          <div className={styles.cubeNote}>
+            <span>{cube.hint}</span>
+            <Button variant="text" onClick={scramble}>
+              {cube.scramble}
+            </Button>
+            <Button variant="text" onClick={solveAll}>
+              {cube.solve}
+            </Button>
+          </div>
+        </div>
       </Container>
     </section>
   );

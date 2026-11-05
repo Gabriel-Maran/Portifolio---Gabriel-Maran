@@ -1,6 +1,5 @@
 import { useLayoutEffect, useRef, useState } from 'react';
 import { cx } from '../utils/classNames.ts';
-import { clamp, prefersReducedMotion } from '../utils/motion.ts';
 import { createCubieShapes, type Face } from './model.ts';
 import styles from './CubeScene.module.css';
 import {
@@ -20,13 +19,10 @@ interface CubeSceneProps {
   tilt?: Tilt;
   /** Arrastar com o mouse ou o dedo gira a vista. */
   draggable?: boolean;
-  /** A vista gira conforme a seção em volta passa pela tela, até a pessoa arrastar. */
-  orbitOnScroll?: boolean;
 }
 
-// Graus de giro da vista por pixel arrastado, e quanto a órbita gira do começo ao fim da seção.
+// Graus de giro da vista por pixel arrastado.
 const DRAG_DEGREES_PER_PIXEL = 0.45;
-const ORBIT_RANGE_DEGREES = 80;
 
 /** Um cubo 3D que segue os giros da página. É decorativo: o leitor de tela não o vê. */
 export function CubeScene({
@@ -35,7 +31,6 @@ export function CubeScene({
   spread = DEFAULT_SPREAD,
   tilt = DEFAULT_TILT,
   draggable = false,
-  orbitOnScroll = false,
 }: CubeSceneProps) {
   const { conductor } = useCube();
   const [shapes] = useState(() => createCubieShapes(showInnerSides));
@@ -76,8 +71,6 @@ export function CubeScene({
       cleanups.push(() => visibility.disconnect());
     }
 
-    let userMoved = false;
-
     if (draggable) {
       let last: { x: number; y: number } | null = null;
       // classList.add('') lança erro; nos testes, sem CSS processado, a classe pode vir vazia.
@@ -86,7 +79,6 @@ export function CubeScene({
       };
       const press = (event: PointerEvent) => {
         last = { x: event.clientX, y: event.clientY };
-        userMoved = true;
         // Segue o arraste mesmo se o ponteiro sair do cubo. O jsdom não tem esse método.
         host.setPointerCapture?.(event.pointerId);
         setDragging(true);
@@ -116,34 +108,10 @@ export function CubeScene({
       });
     }
 
-    const section = host.closest('section');
-    if (orbitOnScroll && section && !prefersReducedMotion()) {
-      let scheduled = 0;
-      const orbit = () => {
-        scheduled = 0;
-        if (userMoved) return;
-        const box = section.getBoundingClientRect();
-        const passed = clamp(
-          (window.innerHeight - box.top) / (box.height + window.innerHeight),
-          0,
-          1,
-        );
-        controller.setTilt(initialTilt[0], initialTilt[1] + (passed - 0.5) * ORBIT_RANGE_DEGREES);
-      };
-      const onScroll = () => {
-        if (!scheduled) scheduled = requestAnimationFrame(orbit);
-      };
-      window.addEventListener('scroll', onScroll, { passive: true });
-      cleanups.push(() => {
-        window.removeEventListener('scroll', onScroll);
-        cancelAnimationFrame(scheduled);
-      });
-    }
-
     return () => {
       for (const cleanup of cleanups) cleanup();
     };
-  }, [conductor, shapes, spread, initialTilt, draggable, orbitOnScroll]);
+  }, [conductor, shapes, spread, initialTilt, draggable]);
 
   return (
     <div

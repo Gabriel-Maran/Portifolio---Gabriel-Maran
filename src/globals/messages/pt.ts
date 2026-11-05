@@ -47,7 +47,7 @@ export const pt = {
 
   hero: {
     role: 'Desenvolvedor Full Stack Júnior *no Grupo Ítalo*',
-    lead: 'Antes de escrever código, entendo o problema e planejo a solução. Depois construo de ponta a ponta: sistemas web, APIs, dashboards e apps.',
+    lead: 'Desenvolvo e mantenho relatórios gerenciais, metas e gestão de arquivos, do banco de dados à interface. Antes do código, entendo o problema e planejo a solução.',
     seeProjects: 'Ver projetos',
     facts: ['Francisco Beltrão, PR', 'Inglês intermediário', 'Formado em ADS pela Unipar'],
   },
@@ -82,9 +82,9 @@ export const pt = {
         example: 'Exemplos: os relatórios gerenciais do trabalho e os seis do PetShop Manager',
       },
       {
-        title: 'Apps e sites',
+        title: 'Apps e landing pages',
         description:
-          'Apps com React Native e Expo, inclusive para uso sem internet, e sites rápidos, acessíveis e em dois idiomas.',
+          'Apps com React Native e Expo, inclusive para uso sem internet, e landing pages rápidas, acessíveis e em dois idiomas.',
         example: 'Exemplo: o [PetShop Manager](petShopCode)',
       },
     ],
