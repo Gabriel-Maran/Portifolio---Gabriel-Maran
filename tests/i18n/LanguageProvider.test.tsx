@@ -59,6 +59,20 @@ describe('idioma da visita', () => {
     expect(current()).toMatch(/^en:/);
   });
 
+  // O build gera o HTML sem navegador: o idioma passado direto não depende da URL nem do storage.
+  test('o idioma inicial passado direto vence a URL e a escolha salva', () => {
+    window.history.replaceState(null, '', '/?lang=en');
+    window.localStorage.setItem(LANGUAGE_STORAGE_KEY, 'en');
+
+    render(
+      <LanguageProvider initialLanguage="pt">
+        <CurrentLanguage />
+      </LanguageProvider>,
+    );
+
+    expect(current()).toMatch(/^pt:/);
+  });
+
   test('a URL vence a escolha salva, sem sobrescrever a escolha', () => {
     window.localStorage.setItem(LANGUAGE_STORAGE_KEY, 'pt');
 

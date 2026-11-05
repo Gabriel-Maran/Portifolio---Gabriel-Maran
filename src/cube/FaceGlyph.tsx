@@ -10,12 +10,13 @@ interface FaceGlyphProps {
   className?: string;
 }
 
-// Atraso de cada casa ao resolver, para a cor correr em espiral em vez de trocar de uma vez.
-const CELL_DELAY_MS = 45;
-const delayOf = (cell: number) =>
-  `${SPIRAL_ORDER.findIndex((position) => position === cell) * CELL_DELAY_MS}ms`;
+// Posição da casa na espiral. O CSS usa para atrasar cada casa, e a cor corre em espiral.
+const spiralOrderOf = (cell: number) => SPIRAL_ORDER.findIndex((position) => position === cell);
 
-/** Miniatura de uma face do cubo. Decorativa: o progresso é dito em texto em outro lugar. */
+/**
+ * Miniatura de uma face do cubo. Decorativa: o progresso é dito em texto em outro lugar.
+ * Sem `style` inline: a página vem pronta no HTML, e a CSP bloqueia atributo de estilo.
+ */
 export function FaceGlyph({ face, solvedCells, className }: FaceGlyphProps) {
   const cells = Math.max(0, Math.min(GLYPH_CELLS, solvedCells));
 
@@ -26,7 +27,7 @@ export function FaceGlyph({ face, solvedCells, className }: FaceGlyphProps) {
           key={cell}
           className={styles.cell}
           data-face-color={color}
-          style={{ transitionDelay: delayOf(cell) }}
+          data-order={spiralOrderOf(cell)}
         />
       ))}
     </span>

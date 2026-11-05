@@ -9,7 +9,11 @@ export function Footer() {
   return (
     <footer className={styles.footer}>
       <Container>
-        © {CURRENT_YEAR} {OWNER_NAME}
+        {/*
+         * O HTML do build traz o ano do build. Depois da virada, o navegador mostra o ano novo, e
+         * essa diferença esperada não deve contar como erro de hidratação.
+         */}
+        © <span suppressHydrationWarning>{CURRENT_YEAR}</span> {OWNER_NAME}
       </Container>
     </footer>
   );

@@ -48,6 +48,8 @@ export type SocialLinkId = (typeof SOCIAL_LINKS)[number]['id'];
 export const LANGUAGES = ['pt', 'en'] as const;
 export type Language = (typeof LANGUAGES)[number];
 export const DEFAULT_LANGUAGE: Language = 'pt';
+/** Idioma do HTML gerado no build. O navegador só hidrata esse HTML quando a visita é nesse idioma. */
+export const PRERENDERED_LANGUAGE: Language = DEFAULT_LANGUAGE;
 
 // O nome de cada idioma fica na própria língua, então não muda com o idioma da página.
 export const LANGUAGE_OPTIONS = {

@@ -24,7 +24,8 @@ const SLICED_LAYERS: ReadonlySet<Layer> = new Set(['pages', 'features']);
 // Sem pacotes, utils e globals rodam no Node e servem a qualquer camada.
 const PACKAGE_FREE_LAYERS: ReadonlySet<Layer> = new Set(['utils', 'globals']);
 
-const ENTRY_FILE = 'main.tsx';
+// As entradas ficam na raiz do src: a do navegador e a de servidor, que gera o HTML no build.
+const ENTRY_FILES: ReadonlySet<string> = new Set(['main.tsx', 'prerender.tsx']);
 const SOURCE_FILE = /\.tsx?$/;
 const IMPORT_SPECIFIER = /(?:\bfrom\s*|\bimport\s*\(?\s*)['"]([^'"]+)['"]/g;
 
@@ -35,7 +36,7 @@ interface ModuleLocation {
 
 /** Recebe um caminho relativo a src, com barras, como "features/hero/Hero.tsx". */
 export function locate(path: string): ModuleLocation | undefined {
-  if (path === ENTRY_FILE) return { layer: 'main', slice: undefined };
+  if (ENTRY_FILES.has(path)) return { layer: 'main', slice: undefined };
 
   const [folder, slice] = path.split('/');
   const layer = LAYERS.find((candidate) => candidate !== 'main' && candidate === folder);
