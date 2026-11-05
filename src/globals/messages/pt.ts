@@ -9,6 +9,9 @@ export const pt = {
   meta: {
     title: 'Gabriel Maran · Desenvolvedor Full Stack',
     description: 'Gabriel Maran, Desenvolvedor Full Stack Júnior no Grupo Ítalo.',
+    // Texto alternativo da imagem de compartilhamento (og:image:alt). Igual ao do index.html.
+    imageAlt:
+      'Gabriel Maran, Desenvolvedor Full Stack Júnior no Grupo Ítalo, ao lado das seis faces resolvidas de um cubo mágico.',
   },
 
   navigation: {

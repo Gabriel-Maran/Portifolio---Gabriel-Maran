@@ -5,6 +5,8 @@ export const en: Messages = {
   meta: {
     title: 'Gabriel Maran · Full Stack Developer',
     description: 'Gabriel Maran, Junior Full Stack Developer at Grupo Ítalo.',
+    imageAlt:
+      'Gabriel Maran, Junior Full Stack Developer at Grupo Ítalo, next to the six solved faces of a Rubik’s cube.',
   },
 
   navigation: {

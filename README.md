@@ -73,9 +73,10 @@ de import.
 - **Testes:** lógica pura no Node e componentes no jsdom. A página inteira é testada nos dois
   idiomas: ordem das seções, títulos sem salto de nível, âncoras que existem, links externos seguros
   e imagens com texto alternativo.
-- **HTML pronto no build:** a página sai do build já escrita no `index.html`, e o React só a
-  hidrata. Quem chega sem JavaScript, e os robôs, leem tudo. Um teste hidrata o HTML gerado e
-  falha se o React apontar qualquer diferença.
+- **HTML pronto no build, nos dois idiomas:** a página sai do build já escrita, uma em português
+  e outra em inglês, cada uma com o próprio `<head>` e a própria prévia de link. O `vercel.json`
+  escolhe pelo `?lang`, e o React só hidrata. Quem chega sem JavaScript, e os robôs, leem tudo.
+  Um teste hidrata o HTML de cada idioma e falha se o React apontar qualquer diferença.
 - **CI:** o `npm run check` roda a cada push e pull request, com as actions fixadas por SHA.
 - **Dependências:** o Dependabot abre PRs semanais para npm e actions, só com versões publicadas
   há mais de 7 dias.

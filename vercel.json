@@ -4,6 +4,14 @@
   "installCommand": "npm ci",
   "buildCommand": "npm run build",
   "outputDirectory": "dist",
+  "rewrites": [
+    {
+      "source": "/",
+      "has": [{ "type": "query", "key": "lang", "value": "en" }],
+      "destination": "/index.en.html"
+    },
+    { "source": "/", "destination": "/index.pt.html" }
+  ],
   "headers": [
     {
       "source": "/(.*)",
