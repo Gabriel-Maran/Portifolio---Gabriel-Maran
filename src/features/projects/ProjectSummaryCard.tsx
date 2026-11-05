@@ -2,6 +2,7 @@ import { Arrow } from '../../components/arrow/Arrow.tsx';
 import { BulletList } from '../../components/bullet-list/BulletList.tsx';
 import { ButtonLink } from '../../components/button/Button.tsx';
 import { Card, CardText, CardTitle } from '../../components/card/Card.tsx';
+import { Disclosure } from '../../components/disclosure/Disclosure.tsx';
 import { Label } from '../../components/label/Label.tsx';
 import { TagList } from '../../components/tag-list/TagList.tsx';
 import styles from './ProjectSummaryCard.module.css';
@@ -17,6 +18,8 @@ export interface ProjectSummaryCardProps {
   description: string;
   /** Pontos técnicos do projeto. Aceitam a marcação de destaque. */
   highlights: readonly string[];
+  /** Texto do controle que abre os pontos técnicos. */
+  highlightsToggle: string;
   tags: readonly string[];
   /** Onde o projeto está agora, como "Etapa 4 de 10". */
   status: string;
@@ -26,12 +29,16 @@ export interface ProjectSummaryCardProps {
   privateNote?: string;
 }
 
-/** Card de projeto em andamento: sem imagem nem números, com o estado atual no rodapé. */
+/**
+ * Card de projeto em andamento: sem imagem nem números, com o estado atual no rodapé. Os
+ * pontos técnicos ficam num bloco que abre, para os quatro cards não alongarem a página.
+ */
 export function ProjectSummaryCard({
   category,
   name,
   description,
   highlights,
+  highlightsToggle,
   tags,
   status,
   links,
@@ -42,8 +49,10 @@ export function ProjectSummaryCard({
       <Label>{category}</Label>
       <CardTitle as="h4">{name}</CardTitle>
       <CardText>{description}</CardText>
-      <BulletList items={highlights} />
       <TagList items={tags} />
+      <Disclosure summary={highlightsToggle} hiddenContext={name}>
+        <BulletList items={highlights} />
+      </Disclosure>
       <footer className={styles.footer}>
         <p className={styles.status}>{status}</p>
         {links.length > 0 ? (

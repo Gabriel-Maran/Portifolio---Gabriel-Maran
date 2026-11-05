@@ -3,7 +3,6 @@ import { Disclosure } from '../../components/disclosure/Disclosure.tsx';
 import { Label } from '../../components/label/Label.tsx';
 import { Section } from '../../components/section/Section.tsx';
 import { TagList } from '../../components/tag-list/TagList.tsx';
-import { VisuallyHidden } from '../../components/visually-hidden/VisuallyHidden.tsx';
 import { SectionGlyph } from '../../cube/SectionGlyph.tsx';
 import { SECTION_IDS } from '../../globals/constants.ts';
 import { useMessages } from '../../i18n/useLanguage.ts';
@@ -38,13 +37,8 @@ export function Experience() {
             <TagList className={styles.tags} items={job.tags} />
             <Disclosure
               className={styles.details}
-              summary={
-                <>
-                  {experience.detailsToggle}
-                  {/* Com dois empregos, o leitor de tela precisa saber de qual é cada botão. */}
-                  <VisuallyHidden>{` · ${job.role}`}</VisuallyHidden>
-                </>
-              }
+              summary={experience.detailsToggle}
+              hiddenContext={job.role}
             >
               <Label as="h4" className={styles.blockTitle}>
                 {job.isCurrent

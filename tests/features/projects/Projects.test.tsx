@@ -21,6 +21,24 @@ describe.each(LANGUAGES)('projetos em %s', (language) => {
   const { projects } = messages[language];
   const url = language === 'en' ? '/?lang=en' : '/';
 
+  test('os pontos técnicos de cada card ficam num bloco fechado, com controle de nome único', () => {
+    renderWithProviders(<Projects />, { url });
+
+    for (const project of projects.inProgress) {
+      const details = cardOf(project.name).querySelector('details');
+      if (!details) throw new Error(`O card de ${project.name} deveria ter o bloco que abre.`);
+      expect(details.open).toBe(false);
+      expect(details.querySelector('summary')?.textContent).toContain(
+        `${projects.highlightsToggle} · ${project.name}`,
+      );
+      expect(
+        within(details)
+          .getAllByRole('listitem')
+          .map((item) => item.textContent),
+      ).toHaveLength(project.highlights.length);
+    }
+  });
+
   test('os projetos em andamento ficam abaixo de um título próprio, um h4 para cada', () => {
     renderWithProviders(<Projects />, { url });
 
