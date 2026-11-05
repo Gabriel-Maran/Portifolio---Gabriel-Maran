@@ -51,18 +51,34 @@ describe('idioma da visita', () => {
     expect(document.documentElement.lang).toBe('en');
   });
 
-  test('links antigos com ?lang=en ainda abrem em inglês', () => {
-    renderPage('/?lang=en');
+  test('um link antigo com ?lang=en abre em inglês e passa a mostrar /en', () => {
+    renderPage('/?utm=linkedin&lang=en#projetos');
 
     expect(current()).toMatch(/^en:/);
+    expect(window.location.pathname).toBe('/en');
+    expect(window.location.search).toBe('?utm=linkedin');
+    expect(window.location.hash).toBe('#projetos');
+    // O link escolhe o idioma desta visita, mas não vira a escolha salva.
+    expect(window.localStorage.getItem(LANGUAGE_STORAGE_KEY)).toBeNull();
   });
 
-  test('usa a escolha salva na visita anterior', () => {
+  test('um link antigo com ?lang=pt fica na raiz, sem o parâmetro', () => {
+    window.localStorage.setItem(LANGUAGE_STORAGE_KEY, 'en');
+
+    renderPage('/?lang=pt');
+
+    expect(current()).toMatch(/^pt:/);
+    expect(window.location.pathname).toBe('/');
+    expect(window.location.search).toBe('');
+  });
+
+  test('usa a escolha salva na visita anterior, sem mexer na URL da raiz', () => {
     window.localStorage.setItem(LANGUAGE_STORAGE_KEY, 'en');
 
     renderPage();
 
     expect(current()).toMatch(/^en:/);
+    expect(window.location.pathname).toBe('/');
   });
 
   // O build gera o HTML sem navegador: o idioma passado direto não depende da URL nem do storage.
@@ -88,10 +104,11 @@ describe('idioma da visita', () => {
     expect(window.localStorage.getItem(LANGUAGE_STORAGE_KEY)).toBe('pt');
   });
 
-  test('idioma inválido na URL é ignorado', () => {
+  test('idioma inválido na URL é ignorado e sai da barra de endereço', () => {
     renderPage('/?lang=<script>alert(1)</script>');
 
     expect(current()).toMatch(/^pt:/);
+    expect(window.location.search).toBe('');
   });
 });
 
@@ -118,15 +135,6 @@ describe('troca de idioma', () => {
     expect(window.location.search).toBe('?utm=linkedin');
     expect(window.location.hash).toBe('#projetos');
     expect(window.localStorage.getItem(LANGUAGE_STORAGE_KEY)).toBe('pt');
-  });
-
-  test('a troca tira o ?lang de um link antigo', () => {
-    renderPage('/?utm=linkedin&lang=en');
-
-    clickLanguage('EN English');
-
-    expect(window.location.pathname).toBe('/en');
-    expect(window.location.search).toBe('?utm=linkedin');
   });
 
   test('com o armazenamento bloqueado, o idioma ainda troca', () => {
