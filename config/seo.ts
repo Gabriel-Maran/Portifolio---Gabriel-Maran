@@ -2,7 +2,6 @@ import type { HtmlTagDescriptor, Plugin } from 'vite';
 import {
   DEFAULT_LANGUAGE,
   LANGUAGE_OPTIONS,
-  LANGUAGE_QUERY_PARAM,
   LANGUAGES,
   type Language,
 } from '../src/globals/constants.ts';
@@ -14,7 +13,7 @@ interface LanguageAlternate {
 }
 
 export const pageUrl = (siteUrl: string, language: Language) =>
-  language === DEFAULT_LANGUAGE ? `${siteUrl}/` : `${siteUrl}/?${LANGUAGE_QUERY_PARAM}=${language}`;
+  `${siteUrl}${LANGUAGE_OPTIONS[language].path}`;
 
 /** Uma URL por idioma, mais o x-default para quem não usa nenhum dos dois. */
 export function languageAlternates(siteUrl: string): LanguageAlternate[] {

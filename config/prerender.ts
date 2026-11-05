@@ -20,10 +20,13 @@ export const ROOT_PLACEHOLDER = `<div id="${ROOT_ELEMENT_ID}"></div>`;
 const SERVER_OUT_DIR = 'node_modules/.tmp/prerender';
 
 /**
- * Arquivo da página de cada idioma no build, como "index.en.html". Não existe index.html: na
- * Vercel, um arquivo na raiz venceria a regra do vercel.json que escolhe o idioma pelo ?lang.
+ * Arquivo da página de cada idioma no build: o idioma da raiz sai no index.html, e o de "/en", no
+ * "en.html". O cleanUrls do vercel.json, e o próprio vite preview, servem "/en" com o "en.html".
  */
-export const pageFileName = (language: Language) => `index.${language}.html`;
+export function pageFileName(language: Language): string {
+  const { path } = LANGUAGE_OPTIONS[language];
+  return path === '/' ? 'index.html' : `${path.slice(1)}.html`;
+}
 
 /** Põe o HTML da página dentro do ponto de montagem. Falha se ele não aparecer uma vez só. */
 export function injectAppHtml(indexHtml: string, appHtml: string): string {
@@ -135,7 +138,8 @@ function findServerEntry(outDir: string, entry: string): string {
 /**
  * Depois do build do navegador, faz um build de servidor da entrada e gera uma página por idioma
  * a partir do index.html: o HTML de cada idioma dentro do #root e o <head> traduzido. O navegador
- * então hidrata esse HTML em vez de montar a página do zero.
+ * então hidrata esse HTML em vez de montar a página do zero. Cada idioma tem o próprio caminho
+ * (ver pageFileName), e nenhuma regra depende da query.
  */
 export function prerender(entry: string, siteUrl: string = SITE_URL): Plugin {
   let config: ResolvedConfig | undefined;
@@ -166,8 +170,8 @@ export function prerender(entry: string, siteUrl: string = SITE_URL): Plugin {
           throw new Error(`${entry} precisa exportar a função renderPage.`);
         }
         const outDir = resolve(config.root, config.build.outDir);
-        const indexPath = join(outDir, 'index.html');
-        const template = readFileSync(indexPath, 'utf8');
+        // O modelo é lido antes do laço, porque a página do idioma padrão sobrescreve o index.html.
+        const template = readFileSync(join(outDir, 'index.html'), 'utf8');
         const defaultHead = pageHead(DEFAULT_LANGUAGE, siteUrl);
 
         for (const language of LANGUAGES) {
@@ -175,7 +179,6 @@ export function prerender(entry: string, siteUrl: string = SITE_URL): Plugin {
           const localized = localizeHead(page, defaultHead, pageHead(language, siteUrl));
           writeFileSync(join(outDir, pageFileName(language)), localized);
         }
-        rmSync(indexPath);
       } finally {
         rmSync(serverOutDir, { recursive: true, force: true });
       }

@@ -19,7 +19,7 @@ const hrefsIn = (card: HTMLElement) =>
 
 describe.each(LANGUAGES)('projetos em %s', (language) => {
   const { projects } = messages[language];
-  const url = language === 'en' ? '/?lang=en' : '/';
+  const url = language === 'en' ? '/en' : '/';
 
   test('os pontos técnicos de cada card ficam num bloco fechado, com controle de nome único', () => {
     renderWithProviders(<Projects />, { url });

@@ -3,7 +3,7 @@
 Site pessoal de Gabriel Maran, Desenvolvedor Full Stack Júnior: o que faço, experiência, projetos,
 como resolvo problemas, stack e contato.
 
-**No ar:** https://gabriel-maran.vercel.app · em inglês: https://gabriel-maran.vercel.app/?lang=en
+**No ar:** https://gabriel-maran.vercel.app · em inglês: https://gabriel-maran.vercel.app/en
 
 A página tem um cubo mágico que abre embaralhado. Cada seção lida desfaz um movimento, e as seis
 faces chegam resolvidas ao fechamento. A solução `U L R F B D` tem um movimento por seção, na ordem da página.
@@ -74,8 +74,9 @@ de import.
   idiomas: ordem das seções, títulos sem salto de nível, âncoras que existem, links externos seguros
   e imagens com texto alternativo.
 - **HTML pronto no build, nos dois idiomas:** a página sai do build já escrita, uma em português
-  e outra em inglês, cada uma com o próprio `<head>` e a própria prévia de link. O `vercel.json`
-  escolhe pelo `?lang`, e o React só hidrata. Quem chega sem JavaScript, e os robôs, leem tudo.
+  e outra em inglês, cada uma com o próprio `<head>` e a própria prévia de link, em `/` e `/en`.
+  O idioma vem do caminho, nunca da query, porque o cache da Vercel ignora a query. O React só
+  hidrata. Quem chega sem JavaScript, e os robôs, leem tudo.
   Um teste hidrata o HTML de cada idioma e falha se o React apontar qualquer diferença.
 - **CI:** o `npm run check` roda a cada push e pull request, com as actions fixadas por SHA.
 - **Dependências:** o Dependabot abre PRs semanais para npm e actions, só com versões publicadas

@@ -46,11 +46,14 @@ describe('injectAppHtml', () => {
 });
 
 describe('uma página por idioma', () => {
-  test('cada idioma tem o próprio arquivo, e nenhum é o index.html', () => {
-    const files = LANGUAGES.map(pageFileName);
+  test('cada idioma tem o próprio arquivo', () => {
+    expect(new Set(LANGUAGES.map(pageFileName)).size).toBe(LANGUAGES.length);
+  });
 
-    expect(new Set(files).size).toBe(LANGUAGES.length);
-    expect(files).not.toContain('index.html');
+  // A Vercel (com cleanUrls) e o vite preview servem "/" com o index.html e "/en" com o en.html.
+  test('o português sai no index.html, e o inglês no en.html', () => {
+    expect(pageFileName(DEFAULT_LANGUAGE)).toBe('index.html');
+    expect(pageFileName('en')).toBe('en.html');
   });
 
   // Se o index.html mudar e perder um desses valores, o build falharia: o teste avisa antes.
@@ -76,10 +79,10 @@ describe('uma página por idioma', () => {
     },
   );
 
-  test('o link em inglês aponta para ?lang=en, e o alternativo é o português', () => {
+  test('o link em inglês aponta para /en, e o alternativo é o português', () => {
     const head = pageHead('en', 'https://exemplo.dev');
 
-    expect(head.url).toBe('https://exemplo.dev/?lang=en');
+    expect(head.url).toBe('https://exemplo.dev/en');
     expect([head.locale, head.localeAlternate]).toEqual(['en_US', 'pt_BR']);
   });
 
@@ -87,7 +90,7 @@ describe('uma página por idioma', () => {
   test('não confunde o hreflang dos links com o lang do <html>', () => {
     const withAlternates = indexHtml.replace(
       '</head>',
-      '<link rel="alternate" hreflang="pt-BR" href="/"><link rel="alternate" hreflang="en" href="/?lang=en"></head>',
+      '<link rel="alternate" hreflang="pt-BR" href="/"><link rel="alternate" hreflang="en" href="/en"></head>',
     );
 
     const html = localizeHead(withAlternates, pageHead(DEFAULT_LANGUAGE), pageHead('en'));

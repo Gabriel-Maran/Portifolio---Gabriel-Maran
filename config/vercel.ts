@@ -1,28 +1,19 @@
 import { readFileSync } from 'node:fs';
 import type { HtmlTagDescriptor, Plugin } from 'vite';
 
-interface VercelCondition {
-  type: 'header' | 'cookie' | 'host' | 'query';
-  key: string;
-  value?: string;
-}
-
-export interface VercelRewrite {
-  source: string;
-  destination: string;
-  has?: VercelCondition[];
-}
-
+// Só o que o site lê do vercel.json. As reescritas aparecem para os testes conferirem que não há.
 interface VercelConfig {
+  cleanUrls?: boolean;
+  trailingSlash?: boolean;
   headers?: Array<{ source: string; headers: Array<{ key: string; value: string }> }>;
-  rewrites?: VercelRewrite[];
+  rewrites?: unknown[];
 }
 
 const VERCEL_CONFIG = new URL('../vercel.json', import.meta.url);
 const ALL_PATHS = '/(.*)';
 
 // O vercel.json é validado pelo schema oficial da Vercel, então o formato é confiável aqui.
-const readVercelConfig = (): VercelConfig => JSON.parse(readFileSync(VERCEL_CONFIG, 'utf8'));
+export const readVercelConfig = (): VercelConfig => JSON.parse(readFileSync(VERCEL_CONFIG, 'utf8'));
 
 // Caminhos padrão da Vercel, os mesmos que @vercel/analytics e @vercel/speed-insights usam por dentro.
 export const VERCEL_INSIGHTS_SCRIPTS = [
@@ -35,45 +26,6 @@ export function readVercelHeadersForAllPaths(): Record<string, string> {
   const { headers = [] } = readVercelConfig();
   const rule = headers.find(({ source }) => source === ALL_PATHS);
   return Object.fromEntries(rule?.headers.map(({ key, value }) => [key, value]) ?? []);
-}
-
-export const readVercelRewrites = (): VercelRewrite[] => readVercelConfig().rewrites ?? [];
-
-/**
- * Destino da primeira reescrita que serve para o caminho e a query, como a Vercel faz. Cobre só o
- * que o site usa: caminho exato e condições de query. Outros tipos de condição nunca casam aqui.
- */
-export function resolveRewrite(
-  rewrites: readonly VercelRewrite[],
-  pathname: string,
-  search: string,
-): string | undefined {
-  const params = new URLSearchParams(search);
-  const matches = (condition: VercelCondition) =>
-    condition.type === 'query' &&
-    (condition.value === undefined
-      ? params.has(condition.key)
-      : params.get(condition.key) === condition.value);
-
-  return rewrites.find(
-    (rewrite) => rewrite.source === pathname && (rewrite.has ?? []).every(matches),
-  )?.destination;
-}
-
-/** O vite preview segue as mesmas reescritas do vercel.json, para o build local servir igual. */
-export function vercelRewritesInPreview(): Plugin {
-  return {
-    name: 'vercel-rewrites-preview',
-    configurePreviewServer(server) {
-      const rewrites = readVercelRewrites();
-      server.middlewares.use((request, _response, next) => {
-        const url = new URL(request.url ?? '/', 'http://localhost');
-        const destination = resolveRewrite(rewrites, url.pathname, url.search);
-        if (destination) request.url = `${destination}${url.search}`;
-        next();
-      });
-    },
-  };
 }
 
 // A Vercel define VERCEL=1 nos builds dela. Fora dela, as rotas /_vercel não existem e os scripts dariam 404.
