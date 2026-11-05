@@ -189,6 +189,7 @@ export const en: Messages = {
     },
     inProgressTitle: 'Ongoing',
     privateCode: 'Code is private for now',
+    highlightsToggle: 'See technical highlights',
     linkLabels: {
       code: 'See the code',
       post: 'See the LinkedIn post',

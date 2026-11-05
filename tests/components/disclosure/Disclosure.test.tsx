@@ -33,6 +33,26 @@ test('abre e fecha pelo controle', () => {
   expect(details.open).toBe(false);
 });
 
+test('com contexto, o nome do controle fica único só para o leitor de tela', () => {
+  const { container } = render(
+    <Disclosure summary="Ver detalhes" hiddenContext="PetShop Manager">
+      <p>Conteúdo</p>
+    </Disclosure>,
+  );
+  const summary = container.querySelector('summary');
+
+  expect(summary?.textContent).toBe('Ver detalhes · PetShop Manager↓');
+  expect(screen.getByText(' · PetShop Manager', { normalizer: (text) => text }).tagName).toBe(
+    'SPAN',
+  );
+});
+
+test('sem contexto, o controle mostra só o texto e a seta', () => {
+  const details = renderDisclosure();
+
+  expect(details.querySelector('summary')?.textContent).toBe('Ver detalhes↓');
+});
+
 test('a seta do controle é decorativa e fica fora do leitor de tela', () => {
   const details = renderDisclosure();
 

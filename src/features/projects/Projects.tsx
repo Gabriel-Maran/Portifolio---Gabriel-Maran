@@ -73,6 +73,7 @@ export function Projects() {
             name={project.name}
             description={project.description}
             highlights={project.highlights}
+            highlightsToggle={projects.highlightsToggle}
             tags={project.tags}
             status={project.status}
             links={projectLinks(project.links, projects.linkLabels)}

@@ -191,6 +191,7 @@ export const pt = {
     },
     inProgressTitle: 'Em andamento',
     privateCode: 'Código privado por enquanto',
+    highlightsToggle: 'Ver destaques técnicos',
     linkLabels: {
       code: 'Ver o código',
       post: 'Ver o post no LinkedIn',
