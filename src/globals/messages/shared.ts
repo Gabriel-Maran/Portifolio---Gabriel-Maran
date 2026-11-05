@@ -58,19 +58,20 @@ export const SHARED = {
     },
     inProgress: ONGOING_PROJECTS,
   },
+  // Cada item tem prova pública ou está no trabalho atual (ver docs/perfil-profissional.md).
   stack: {
     frontend: {
       title: 'Front-end',
-      main: ['React', 'TypeScript', 'JavaScript'],
-      also: ['React Native (Expo)', 'HTML', 'CSS'],
+      main: ['React', 'TypeScript', 'JavaScript', 'React Native (Expo)'],
+      also: ['HTML', 'CSS', 'Vite', 'Vitest', 'Testing Library'],
     },
     backend: {
       title: 'Back-end',
-      also: ['Java', 'Kotlin', 'Spring', 'Maven', 'JDBC'],
+      also: ['Prisma', 'Zod', 'Java', 'Kotlin', 'Spring', 'Maven', 'JDBC'],
     },
     data: {
       main: ['PostgreSQL', 'AWS', 'Git'],
-      also: ['MySQL', 'Docker'],
+      also: ['SQLite', 'MySQL', 'Docker', 'GitHub Actions', 'Vercel'],
     },
   },
 } as const;
