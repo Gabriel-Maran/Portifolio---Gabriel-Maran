@@ -8,14 +8,7 @@ interface OngoingProject {
 }
 
 // Tipado por fora do `as const` para todos os projetos terem a mesma forma, com ou sem link.
-const ONGOING_PROJECTS: Readonly<
-  Record<'petShop' | 'expenses' | 'tickets' | 'miniReact', OngoingProject>
-> = {
-  petShop: {
-    name: 'PetShop Manager',
-    tags: ['React Native', 'Expo', 'TypeScript', 'SQLite'],
-    links: { code: 'petShopCode', post: 'petShopPost' },
-  },
+const ONGOING_PROJECTS: Readonly<Record<'expenses' | 'tickets' | 'miniReact', OngoingProject>> = {
   expenses: {
     name: 'Controle de Gastos',
     tags: ['Node.js', 'Express', 'TypeScript', 'Zod', 'Prisma', 'PostgreSQL'],
@@ -56,6 +49,12 @@ export const SHARED = {
       tags: ['Kotlin', 'Spring Boot', 'PostgreSQL', 'PDFBox'],
       stats: { endpoints: 48, days: 38, people: 4 },
     },
+    // Testes contados no `main` do PetShop em 2026-11-11 (`npm test`).
+    petShop: {
+      name: 'PetShop Manager',
+      tags: ['React Native', 'Expo', 'TypeScript', 'SQLite', 'Zod'],
+      stats: { tests: 472, reports: 6, people: 3 },
+    },
     inProgress: ONGOING_PROJECTS,
   },
   // Cada item tem prova pública ou está no trabalho atual (ver docs/perfil-profissional.md).
@@ -77,3 +76,4 @@ export const SHARED = {
 } as const;
 
 export type RinhaStat = keyof typeof SHARED.projects.rinha.stats;
+export type PetShopStat = keyof typeof SHARED.projects.petShop.stats;

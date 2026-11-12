@@ -1,5 +1,5 @@
 import type { ProjectLinkKind, SectionKey, SocialLinkId } from '../constants.ts';
-import { SHARED, type RinhaStat } from './shared.ts';
+import { SHARED, type PetShopStat, type RinhaStat } from './shared.ts';
 
 /*
  * Textos com destaque usam uma marcação mínima, lida por utils/richText.ts:
@@ -172,7 +172,7 @@ export const pt = {
 
   projects: {
     title: 'Projetos',
-    subtitle: 'Um projeto entregue, com código aberto, e os que estou construindo agora.',
+    subtitle: 'Dois projetos entregues, com código aberto, e os que estou construindo agora.',
     rinha: {
       ...SHARED.projects.rinha,
       category: 'Projeto acadêmico',
@@ -192,6 +192,23 @@ export const pt = {
         'Histórico de uma batalha no jogo, com o dano causado em cada ataque e a vida dos dois ratos na rodada 6.',
       imageCaption: 'Histórico por rodada, gerado pelo motor de batalha que construí',
     },
+    petShop: {
+      ...SHARED.projects.petShop,
+      category: 'App mobile · Feito para um pet shop',
+      description:
+        'App Android para um pet shop organizar donos, pets e a agenda de banho e tosa, com pacotes que remarcam o próximo atendimento sozinhos. Funciona sem internet, com o banco no próprio celular.',
+      myPart:
+        '**Minha parte:** criei a base do app (Expo, SQLite e as camadas), a remarcação automática, os relatórios e o backup. Depois, revisei o código com testes, migrações, validação e navegação.',
+      statLabels: {
+        tests: 'testes automatizados',
+        reports: 'relatórios',
+        people: 'pessoas na equipe',
+      } satisfies Record<PetShopStat, string>,
+      imageAlt:
+        'Três telas do app: o calendário com os agendamentos do dia, o pacote mensal de um pet com remarcação automática e a lista dos seis relatórios.',
+      imageCaption:
+        'Calendário, pacote com remarcação automática e relatórios, com dados de exemplo',
+    },
     inProgressTitle: 'Em andamento',
     privateCode: 'Código privado por enquanto',
     highlightsToggle: 'Ver destaques técnicos',
@@ -200,17 +217,6 @@ export const pt = {
       post: 'Ver o post no LinkedIn',
     } satisfies Record<ProjectLinkKind, string>,
     inProgress: [
-      {
-        ...SHARED.projects.inProgress.petShop,
-        category: 'Projeto acadêmico · App mobile',
-        description:
-          'App para um pet shop organizar donos, pets e agenda sem depender de internet. Os planos remarcam o próximo atendimento sozinhos.',
-        highlights: [
-          'Banco no próprio celular, com 8 triggers no SQLite para a remarcação automática e para ativar ou desativar dono e pets em cascata.',
-          'Seis relatórios, como dias e horários mais atendidos e pets há mais tempo sem visita, com o telefone do dono.',
-        ],
-        status: 'Próximo passo: reorganizar a arquitetura em pull requests públicos.',
-      },
       {
         ...SHARED.projects.inProgress.expenses,
         category: 'API · Projeto pessoal',

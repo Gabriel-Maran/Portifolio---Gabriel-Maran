@@ -11,13 +11,25 @@ import {
 } from '../../globals/constants.ts';
 import { useMessages } from '../../i18n/useLanguage.ts';
 import { hasKey } from '../../utils/object.ts';
+import petShopScreensImage from './assets/petshop-telas.jpg';
 import rinhaHistoryImage from './assets/rinha-historico.jpg';
 import { ProjectCard } from './ProjectCard.tsx';
 import styles from './Projects.module.css';
 import { ProjectSummaryCard } from './ProjectSummaryCard.tsx';
 
-// Tamanho real da imagem, para o navegador reservar o espaço e a página não pular ao carregar.
+// Tamanho real das imagens, para o navegador reservar o espaço e a página não pular ao carregar.
 const RINHA_IMAGE_SIZE = { width: 860, height: 640 } as const;
+const PET_SHOP_IMAGE_SIZE = { width: 960, height: 640 } as const;
+
+/** Os números do projeto com o rótulo do idioma, na ordem em que foram declarados. */
+function projectStats<Key extends string>(
+  stats: Readonly<Record<Key, number>>,
+  labels: Readonly<Record<Key, string>>,
+) {
+  return Object.entries<number>(stats).flatMap(([key, value]) =>
+    hasKey(labels, key) ? [{ label: labels[key], value }] : [],
+  );
+}
 
 /** Os links que o projeto tem, na ordem de PROJECT_LINK_KINDS, já com a URL e o texto. */
 function projectLinks(
@@ -32,10 +44,7 @@ function projectLinks(
 
 export function Projects() {
   const { projects } = useMessages();
-  const { rinha } = projects;
-  const stats = Object.entries(rinha.stats).flatMap(([key, value]) =>
-    hasKey(rinha.statLabels, key) ? [{ label: rinha.statLabels[key], value }] : [],
-  );
+  const { rinha, petShop, linkLabels } = projects;
 
   return (
     <Section
@@ -49,7 +58,7 @@ export function Projects() {
         name={rinha.name}
         description={rinha.description}
         contribution={rinha.myPart}
-        stats={stats}
+        stats={projectStats(rinha.stats, rinha.statLabels)}
         tags={rinha.tags}
         primaryLink={{ href: EXTERNAL_URLS.rinhaVideo, label: rinha.watchVideo }}
         secondaryLink={{ href: EXTERNAL_URLS.rinhaCode, label: rinha.seeCode }}
@@ -61,11 +70,27 @@ export function Projects() {
           ...RINHA_IMAGE_SIZE,
         }}
       />
+      <ProjectCard
+        category={petShop.category}
+        name={petShop.name}
+        description={petShop.description}
+        contribution={petShop.myPart}
+        stats={projectStats(petShop.stats, petShop.statLabels)}
+        tags={petShop.tags}
+        primaryLink={{ href: EXTERNAL_URLS.petShopCode, label: linkLabels.code }}
+        secondaryLink={{ href: EXTERNAL_URLS.petShopPost, label: linkLabels.post }}
+        image={{
+          src: petShopScreensImage,
+          alt: petShop.imageAlt,
+          caption: petShop.imageCaption,
+          ...PET_SHOP_IMAGE_SIZE,
+        }}
+      />
 
       <Label as="h3" className={styles.groupTitle}>
         {projects.inProgressTitle}
       </Label>
-      <Grid columns={2}>
+      <Grid columns={3}>
         {projects.inProgress.map((project) => (
           <ProjectSummaryCard
             key={project.name}
@@ -76,7 +101,7 @@ export function Projects() {
             highlightsToggle={projects.highlightsToggle}
             tags={project.tags}
             status={project.status}
-            links={projectLinks(project.links, projects.linkLabels)}
+            links={projectLinks(project.links, linkLabels)}
             privateNote={project.links.code ? undefined : projects.privateCode}
           />
         ))}

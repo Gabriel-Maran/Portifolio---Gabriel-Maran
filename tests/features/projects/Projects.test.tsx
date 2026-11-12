@@ -3,11 +3,12 @@ import { describe, expect, test } from 'vitest';
 import { Projects } from '../../../src/features/projects/Projects.tsx';
 import { EXTERNAL_URLS, LANGUAGES, PROJECT_LINK_KINDS } from '../../../src/globals/constants.ts';
 import { messages } from '../../../src/globals/messages/index.ts';
+import { hasKey } from '../../../src/utils/object.ts';
 import { renderWithProviders } from '../../support/renderWithProviders.tsx';
 
-// O card de um projeto em andamento, achado pelo título dele.
-function cardOf(name: string) {
-  const card = screen.getByRole('heading', { level: 4, name }).closest('article');
+// O card de um projeto, achado pelo título: h3 no entregue e h4 no que está em andamento.
+function cardOf(name: string, level: 3 | 4 = 4) {
+  const card = screen.getByRole('heading', { level, name }).closest('article');
   if (!card) throw new Error(`O card de ${name} deveria existir.`);
   return card;
 }
@@ -72,18 +73,55 @@ describe.each(LANGUAGES)('projetos em %s', (language) => {
   });
 });
 
-test('o PetShop Manager linka o código e o post, e o Mini React só o código', () => {
+describe.each(LANGUAGES)('projetos entregues em %s', (language) => {
+  const { projects } = messages[language];
+  const url = language === 'en' ? '/en' : '/';
+
+  test('o PetShop Manager vem depois do Rinha, com os números, a imagem e a sua parte', () => {
+    renderWithProviders(<Projects />, { url });
+    const { petShop } = projects;
+    const card = cardOf(petShop.name, 3);
+
+    expect(screen.getAllByRole('heading', { level: 3 }).map((title) => title.textContent)).toEqual([
+      projects.rinha.name,
+      petShop.name,
+      projects.inProgressTitle,
+    ]);
+    for (const [key, value] of Object.entries(petShop.stats)) {
+      if (!hasKey(petShop.statLabels, key)) throw new Error(`Falta o rótulo de ${key}.`);
+      const label = within(card).getByText(petShop.statLabels[key]);
+      expect(label.nextElementSibling?.textContent).toBe(String(value));
+    }
+    expect(within(card).getByRole('img', { name: petShop.imageAlt })).toBeTruthy();
+    expect(within(card).getByText(petShop.imageCaption)).toBeTruthy();
+    expect(card.textContent).toContain(petShop.myPart.replaceAll('**', ''));
+  });
+
+  test('o PetShop Manager linka o código e o post, nesta ordem', () => {
+    renderWithProviders(<Projects />, { url });
+    const { linkLabels } = projects;
+    const card = cardOf(projects.petShop.name, 3);
+
+    expect(within(card).getByRole('link', { name: linkLabels.code }).getAttribute('href')).toBe(
+      EXTERNAL_URLS.petShopCode,
+    );
+    expect(within(card).getByRole('link', { name: linkLabels.post }).getAttribute('href')).toBe(
+      EXTERNAL_URLS.petShopPost,
+    );
+    expect(hrefsIn(card)).toEqual([EXTERNAL_URLS.petShopCode, EXTERNAL_URLS.petShopPost]);
+  });
+
+  test('o PetShop Manager saiu dos projetos em andamento', () => {
+    renderWithProviders(<Projects />, { url });
+
+    expect(projects.inProgress.map((project) => project.name)).not.toContain(projects.petShop.name);
+    expect(screen.queryByRole('heading', { level: 4, name: projects.petShop.name })).toBeNull();
+  });
+});
+
+test('o Mini React linka só o código', () => {
   renderWithProviders(<Projects />);
-  const { linkLabels } = messages.pt.projects;
 
-  const petShop = cardOf('PetShop Manager');
-
-  expect(within(petShop).getByRole('link', { name: linkLabels.code }).getAttribute('href')).toBe(
-    EXTERNAL_URLS.petShopCode,
-  );
-  expect(within(petShop).getByRole('link', { name: linkLabels.post }).getAttribute('href')).toBe(
-    EXTERNAL_URLS.petShopPost,
-  );
   expect(hrefsIn(cardOf('Mini React'))).toEqual([EXTERNAL_URLS.miniReactCode]);
 });
 
